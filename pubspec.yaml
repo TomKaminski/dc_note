@@ -1,0 +1,44 @@
+name: DC_Note
+description: A new Flutter project.
+version: 1.0.0+1
+
+environment:
+  sdk: ">=2.7.0 <3.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  flutter_localizations:
+    sdk: flutter
+  bloc: ^4.0.0
+  flutter_bloc: ^4.0.0
+  uuid: ^2.0.4
+  usage: "^3.4.1"
+  flutter_local_notifications: "^1.2.1"
+  equatable: "^1.1.1"
+  shared_preferences: "^0.5.6+3"
+  json_annotation: "^3.0.1"
+  dio: ^3.0.9
+  lint: ^1.1.1
+  get_it: ^4.0.0
+  connectivity: ^0.4.8+2
+  moor_flutter: ^2.1.1
+  moor_ffi: ^0.4.0
+  path: ^1.6.4
+  path_provider: ^1.6.5
+  rxdart: ^0.23.1
+  intl: ^0.16.0
+  liquid_pull_to_refresh: ^1.1.2
+
+dev_dependencies:
+  json_serializable: "^3.2.5"
+  build_runner: "^1.8.0"
+  moor_generator: ^2.4.0
+
+flutter_intl:
+  enabled: true
+
+flutter:
+  uses-material-design: true
+  assets:
+    - assets/images/
