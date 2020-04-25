@@ -401,17 +401,259 @@ class $ProductTableTable extends ProductTable
   }
 }
 
+class CategoryEntity extends DataClass implements Insertable<CategoryEntity> {
+  final int id;
+  final int parentId;
+  final String name;
+  final String key;
+  CategoryEntity(
+      {@required this.id,
+      this.parentId,
+      @required this.name,
+      @required this.key});
+  factory CategoryEntity.fromData(
+      Map<String, dynamic> data, GeneratedDatabase db,
+      {String prefix}) {
+    final effectivePrefix = prefix ?? '';
+    final intType = db.typeSystem.forDartType<int>();
+    final stringType = db.typeSystem.forDartType<String>();
+    return CategoryEntity(
+      id: intType.mapFromDatabaseResponse(data['${effectivePrefix}id']),
+      parentId:
+          intType.mapFromDatabaseResponse(data['${effectivePrefix}parent_id']),
+      name: stringType.mapFromDatabaseResponse(data['${effectivePrefix}name']),
+      key: stringType.mapFromDatabaseResponse(data['${effectivePrefix}key']),
+    );
+  }
+  factory CategoryEntity.fromJson(Map<String, dynamic> json,
+      {ValueSerializer serializer}) {
+    serializer ??= moorRuntimeOptions.defaultSerializer;
+    return CategoryEntity(
+      id: serializer.fromJson<int>(json['id']),
+      parentId: serializer.fromJson<int>(json['parentId']),
+      name: serializer.fromJson<String>(json['name']),
+      key: serializer.fromJson<String>(json['key']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer serializer}) {
+    serializer ??= moorRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<int>(id),
+      'parentId': serializer.toJson<int>(parentId),
+      'name': serializer.toJson<String>(name),
+      'key': serializer.toJson<String>(key),
+    };
+  }
+
+  @override
+  CategoryTableCompanion createCompanion(bool nullToAbsent) {
+    return CategoryTableCompanion(
+      id: id == null && nullToAbsent ? const Value.absent() : Value(id),
+      parentId: parentId == null && nullToAbsent
+          ? const Value.absent()
+          : Value(parentId),
+      name: name == null && nullToAbsent ? const Value.absent() : Value(name),
+      key: key == null && nullToAbsent ? const Value.absent() : Value(key),
+    );
+  }
+
+  CategoryEntity copyWith({int id, int parentId, String name, String key}) =>
+      CategoryEntity(
+        id: id ?? this.id,
+        parentId: parentId ?? this.parentId,
+        name: name ?? this.name,
+        key: key ?? this.key,
+      );
+  @override
+  String toString() {
+    return (StringBuffer('CategoryEntity(')
+          ..write('id: $id, ')
+          ..write('parentId: $parentId, ')
+          ..write('name: $name, ')
+          ..write('key: $key')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => $mrjf($mrjc(id.hashCode,
+      $mrjc(parentId.hashCode, $mrjc(name.hashCode, key.hashCode))));
+  @override
+  bool operator ==(dynamic other) =>
+      identical(this, other) ||
+      (other is CategoryEntity &&
+          other.id == this.id &&
+          other.parentId == this.parentId &&
+          other.name == this.name &&
+          other.key == this.key);
+}
+
+class CategoryTableCompanion extends UpdateCompanion<CategoryEntity> {
+  final Value<int> id;
+  final Value<int> parentId;
+  final Value<String> name;
+  final Value<String> key;
+  const CategoryTableCompanion({
+    this.id = const Value.absent(),
+    this.parentId = const Value.absent(),
+    this.name = const Value.absent(),
+    this.key = const Value.absent(),
+  });
+  CategoryTableCompanion.insert({
+    this.id = const Value.absent(),
+    this.parentId = const Value.absent(),
+    @required String name,
+    @required String key,
+  })  : name = Value(name),
+        key = Value(key);
+  CategoryTableCompanion copyWith(
+      {Value<int> id,
+      Value<int> parentId,
+      Value<String> name,
+      Value<String> key}) {
+    return CategoryTableCompanion(
+      id: id ?? this.id,
+      parentId: parentId ?? this.parentId,
+      name: name ?? this.name,
+      key: key ?? this.key,
+    );
+  }
+}
+
+class $CategoryTableTable extends CategoryTable
+    with TableInfo<$CategoryTableTable, CategoryEntity> {
+  final GeneratedDatabase _db;
+  final String _alias;
+  $CategoryTableTable(this._db, [this._alias]);
+  final VerificationMeta _idMeta = const VerificationMeta('id');
+  GeneratedIntColumn _id;
+  @override
+  GeneratedIntColumn get id => _id ??= _constructId();
+  GeneratedIntColumn _constructId() {
+    return GeneratedIntColumn('id', $tableName, false,
+        hasAutoIncrement: true, declaredAsPrimaryKey: true);
+  }
+
+  final VerificationMeta _parentIdMeta = const VerificationMeta('parentId');
+  GeneratedIntColumn _parentId;
+  @override
+  GeneratedIntColumn get parentId => _parentId ??= _constructParentId();
+  GeneratedIntColumn _constructParentId() {
+    return GeneratedIntColumn(
+      'parent_id',
+      $tableName,
+      true,
+    );
+  }
+
+  final VerificationMeta _nameMeta = const VerificationMeta('name');
+  GeneratedTextColumn _name;
+  @override
+  GeneratedTextColumn get name => _name ??= _constructName();
+  GeneratedTextColumn _constructName() {
+    return GeneratedTextColumn(
+      'name',
+      $tableName,
+      false,
+    );
+  }
+
+  final VerificationMeta _keyMeta = const VerificationMeta('key');
+  GeneratedTextColumn _key;
+  @override
+  GeneratedTextColumn get key => _key ??= _constructKey();
+  GeneratedTextColumn _constructKey() {
+    return GeneratedTextColumn(
+      'key',
+      $tableName,
+      false,
+    );
+  }
+
+  @override
+  List<GeneratedColumn> get $columns => [id, parentId, name, key];
+  @override
+  $CategoryTableTable get asDslTable => this;
+  @override
+  String get $tableName => _alias ?? 'category_table';
+  @override
+  final String actualTableName = 'category_table';
+  @override
+  VerificationContext validateIntegrity(CategoryTableCompanion d,
+      {bool isInserting = false}) {
+    final context = VerificationContext();
+    if (d.id.present) {
+      context.handle(_idMeta, id.isAcceptableValue(d.id.value, _idMeta));
+    }
+    if (d.parentId.present) {
+      context.handle(_parentIdMeta,
+          parentId.isAcceptableValue(d.parentId.value, _parentIdMeta));
+    }
+    if (d.name.present) {
+      context.handle(
+          _nameMeta, name.isAcceptableValue(d.name.value, _nameMeta));
+    } else if (isInserting) {
+      context.missing(_nameMeta);
+    }
+    if (d.key.present) {
+      context.handle(_keyMeta, key.isAcceptableValue(d.key.value, _keyMeta));
+    } else if (isInserting) {
+      context.missing(_keyMeta);
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  CategoryEntity map(Map<String, dynamic> data, {String tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : null;
+    return CategoryEntity.fromData(data, _db, prefix: effectivePrefix);
+  }
+
+  @override
+  Map<String, Variable> entityToSql(CategoryTableCompanion d) {
+    final map = <String, Variable>{};
+    if (d.id.present) {
+      map['id'] = Variable<int, IntType>(d.id.value);
+    }
+    if (d.parentId.present) {
+      map['parent_id'] = Variable<int, IntType>(d.parentId.value);
+    }
+    if (d.name.present) {
+      map['name'] = Variable<String, StringType>(d.name.value);
+    }
+    if (d.key.present) {
+      map['key'] = Variable<String, StringType>(d.key.value);
+    }
+    return map;
+  }
+
+  @override
+  $CategoryTableTable createAlias(String alias) {
+    return $CategoryTableTable(_db, alias);
+  }
+}
+
 abstract class _$AppDatabase extends GeneratedDatabase {
   _$AppDatabase(QueryExecutor e) : super(SqlTypeSystem.defaultInstance, e);
   $ProductTableTable _productTable;
   $ProductTableTable get productTable =>
       _productTable ??= $ProductTableTable(this);
+  $CategoryTableTable _categoryTable;
+  $CategoryTableTable get categoryTable =>
+      _categoryTable ??= $CategoryTableTable(this);
   ProductDao _productDao;
   ProductDao get productDao => _productDao ??= ProductDao(this as AppDatabase);
+  CategoryDao _categoryDao;
+  CategoryDao get categoryDao =>
+      _categoryDao ??= CategoryDao(this as AppDatabase);
   @override
   Iterable<TableInfo> get allTables => allSchemaEntities.whereType<TableInfo>();
   @override
-  List<DatabaseSchemaEntity> get allSchemaEntities => [productTable];
+  List<DatabaseSchemaEntity> get allSchemaEntities =>
+      [productTable, categoryTable];
 }
 
 // **************************************************************************
@@ -420,4 +662,7 @@ abstract class _$AppDatabase extends GeneratedDatabase {
 
 mixin _$ProductDaoMixin on DatabaseAccessor<AppDatabase> {
   $ProductTableTable get productTable => db.productTable;
+}
+mixin _$CategoryDaoMixin on DatabaseAccessor<AppDatabase> {
+  $CategoryTableTable get categoryTable => db.categoryTable;
 }

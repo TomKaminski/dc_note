@@ -1,5 +1,6 @@
 import 'package:DC_Note/pages/add_product/add_product_screen.dart';
 import 'package:DC_Note/pages/products/products_screen.dart';
+import 'package:DC_Note/pages/splash/splash_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
@@ -53,7 +54,8 @@ class AppComponentState extends State<AppComponent> {
       ),
       initialRoute: "/",
       routes: {
-        '/': (ctx) => ProductsScreen(),
+        '/': (ctx) => SplashScreen(),
+        '/products': (ctx) => ProductsScreen(),
         '/addProduct': (ctx) => AddProductScreen()
       },
     );
