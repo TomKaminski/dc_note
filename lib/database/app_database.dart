@@ -24,6 +24,11 @@ class ProductDao extends DatabaseAccessor<AppDatabase> with _$ProductDaoMixin {
     return await (select(productTable)..where(filter)).getSingle();
   }
 
+  Future<List<ProductEntity>> getAllByExpression(
+      Expression<bool, BoolType> Function($ProductTableTable) filter) async {
+    return await (select(productTable)..where(filter)).get();
+  }
+
   Future<List<ProductEntity>> getAll() async => select(productTable).get();
 
   Future insertAll(List<ProductEntity> products) async {
@@ -58,11 +63,15 @@ class CategoryDao extends DatabaseAccessor<AppDatabase>
     return await (select(categoryTable)..where(filter)).getSingle();
   }
 
+  Future<List<CategoryEntity>> getAllByExpression(
+      Expression<bool, BoolType> Function($CategoryTableTable) filter) async {
+    return await (select(categoryTable)..where(filter)).get();
+  }
+
   Future<List<CategoryEntity>> getAll() async => select(categoryTable).get();
 
-  Future insertAll(List<CategoryEntity> categories) async {
-    db.batch((b) => b.insertAll(categoryTable, categories,
-        mode: InsertMode.insertOrReplace));
+  Future insertAll(List<CategoryEntity> categories, InsertMode mode) async {
+    db.batch((b) => b.insertAll(categoryTable, categories, mode: mode));
   }
 
   Future<CategoryEntity> getById(int id) async {

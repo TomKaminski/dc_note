@@ -1,10 +1,13 @@
 import 'package:DC_Note/core/bloc/bloc_field.dart';
 import 'package:DC_Note/core/bloc/validators/not_empty_validator.dart';
+import 'package:DC_Note/core/models/selectors/base_selector_item.dart';
+import 'package:DC_Note/pages/category_selector/category_screen.dart';
 import 'package:flutter/material.dart';
 
-class BaseDatePickerFieldWidget extends StatefulWidget {
+class BaseSelectorFieldWidget<T extends BaseSelectorItem>
+    extends StatefulWidget {
   final DateTime initialData;
-  final BehaviorBlocField<DateTime> blocField;
+  final BehaviorBlocField<T> blocField;
   final Stream<bool> disabledStream;
   final bool isDisabled;
   final String title;
@@ -12,7 +15,7 @@ class BaseDatePickerFieldWidget extends StatefulWidget {
   final Widget suffix;
   final Image prefixImage;
 
-  const BaseDatePickerFieldWidget(
+  const BaseSelectorFieldWidget(
       {Key key,
       @required this.blocField,
       @required this.initialData,
@@ -25,11 +28,11 @@ class BaseDatePickerFieldWidget extends StatefulWidget {
       : super(key: key);
 
   @override
-  _BaseDatePickerFieldWidgetState createState() =>
-      _BaseDatePickerFieldWidgetState();
+  _BaseSelectorFieldWidgetState<T> createState() =>
+      _BaseSelectorFieldWidgetState<T>();
 }
 
-class _BaseDatePickerFieldWidgetState extends State<BaseDatePickerFieldWidget> {
+class _BaseSelectorFieldWidgetState<T> extends State<BaseSelectorFieldWidget> {
   String inputError;
 
   @override
@@ -73,13 +76,15 @@ class _BaseDatePickerFieldWidgetState extends State<BaseDatePickerFieldWidget> {
                       if (isDisabled || widget.isDisabled) {
                         return;
                       }
-                      final selectedDate = await showDatePicker(
-                          context: context,
-                          initialDate: DateTime.now(),
-                          firstDate: DateTime.now(),
-                          lastDate: DateTime(2099));
+                      final T result = await Navigator.of(context).push(
+                          MaterialPageRoute(
+                              builder: (ctx) => CategorySelectorScreen()));
 
-                      widget.blocField.onChanged(selectedDate);
+                      if (result == null) {
+                        return;
+                      }
+
+                      widget.blocField.onChanged(result);
                     },
                     child: Container(
                       child: Column(
@@ -88,15 +93,7 @@ class _BaseDatePickerFieldWidgetState extends State<BaseDatePickerFieldWidget> {
                           SizedBox(
                             height: 12,
                           ),
-                          Text(
-                              widget.blocField.value?.toString() ??
-                                  widget.title,
-                              style: TextStyle(
-                                  fontSize: 15,
-                                  fontWeight: FontWeight.bold,
-                                  color: (isDisabled || widget.isDisabled)
-                                      ? Colors.black12
-                                      : Colors.black54)),
+                          getItemWidget(isDisabled),
                           SizedBox(
                             height: 12,
                           ),
@@ -108,5 +105,19 @@ class _BaseDatePickerFieldWidgetState extends State<BaseDatePickerFieldWidget> {
             ),
           );
         });
+  }
+
+  Widget getItemWidget(bool isDisabled) {
+    final disabled = isDisabled || widget.isDisabled;
+    if (widget.blocField.value != null) {
+      return BaseSelectorItem.getSelectorWidget(
+          widget.blocField.value, disabled);
+    } else {
+      return Text(widget.blocField.value?.toString() ?? widget.title,
+          style: TextStyle(
+              fontSize: 15,
+              fontWeight: FontWeight.bold,
+              color: disabled ? Colors.black12 : Colors.black54));
+    }
   }
 }

@@ -1,5 +1,6 @@
 import 'package:DC_Note/core/statics/application.dart';
 import 'package:DC_Note/database/app_database.dart';
+import 'package:moor_flutter/moor_flutter.dart';
 
 class CategoryKeys {
   static String hair = "CATEGORY_HAIR";
@@ -10,6 +11,22 @@ class CategoryKeys {
 }
 
 class CategoriesProvider {
+  Future<List<CategoryEntity>> fetchCategories() async {
+    final mainEntities = await Application.database.categoryDao
+        .getAllByExpression((tbl) => isNull(tbl.parentId));
+
+    List<CategoryEntity> result = [];
+
+    for (var element in mainEntities) {
+      result.add(element);
+      final childEntities = await Application.database.categoryDao
+          .getAllByExpression((tbl) => tbl.parentId.equals(element.id));
+      result.addAll(childEntities);
+    }
+
+    return result;
+  }
+
   insertOrReplaceCategories() async {
     await _insertOrReplaceMainCategories();
     await _insertOrReplaceHairSubcategories();
@@ -53,12 +70,13 @@ class CategoriesProvider {
       ),
     ];
 
-    await Application.database.categoryDao.insertAll(entities);
+    await Application.database.categoryDao
+        .insertAll(entities, InsertMode.insertOrIgnore);
   }
 
   _insertOrReplaceHairSubcategories() async {
     CategoryEntity parent = await Application.database.categoryDao
-        .getSingle((tbl) => tbl.key.equals(CategoryKeys.face));
+        .getSingle((tbl) => tbl.key.equals(CategoryKeys.hair));
 
     List<String> categoryNames = [
       "do stylizacji włosów",
@@ -85,7 +103,8 @@ class CategoriesProvider {
             key: CategoryKeys.hair + "_${e.key}"))
         .toList();
 
-    await Application.database.categoryDao.insertAll(entities);
+    await Application.database.categoryDao
+        .insertAll(entities, InsertMode.insertOrIgnore);
   }
 
   _insertOrReplaceFaceSubcategories() async {
@@ -119,7 +138,8 @@ class CategoriesProvider {
             key: CategoryKeys.face + "_${e.key}"))
         .toList();
 
-    await Application.database.categoryDao.insertAll(entities);
+    await Application.database.categoryDao
+        .insertAll(entities, InsertMode.insertOrIgnore);
   }
 
   _insertOrReplaceColourSubcategories() async {
@@ -156,7 +176,8 @@ class CategoriesProvider {
             key: CategoryKeys.colour + "_${e.key}"))
         .toList();
 
-    await Application.database.categoryDao.insertAll(entities);
+    await Application.database.categoryDao
+        .insertAll(entities, InsertMode.insertOrIgnore);
   }
 
   _insertOrReplaceBodySubcategories() async {
@@ -194,7 +215,8 @@ class CategoriesProvider {
             key: CategoryKeys.body + "_${e.key}"))
         .toList();
 
-    await Application.database.categoryDao.insertAll(entities);
+    await Application.database.categoryDao
+        .insertAll(entities, InsertMode.insertOrIgnore);
   }
 
   _insertOrReplaceNailSubcategories() async {
@@ -225,6 +247,7 @@ class CategoriesProvider {
             key: CategoryKeys.nail + "_${e.key}"))
         .toList();
 
-    await Application.database.categoryDao.insertAll(entities);
+    await Application.database.categoryDao
+        .insertAll(entities, InsertMode.insertOrIgnore);
   }
 }

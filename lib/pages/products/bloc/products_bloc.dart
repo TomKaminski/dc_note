@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:DC_Note/core/models/product_model.dart';
 import 'package:DC_Note/core/statics/application.dart';
+import 'package:DC_Note/database/app_database.dart';
 import 'package:equatable/equatable.dart';
 
 import 'package:bloc/bloc.dart';
@@ -18,8 +19,17 @@ class ProductsBloc extends Bloc<ProductsEvent, ProductsState> {
   ) async* {
     if (event is LoadProductsEvent) {
       try {
-        final products = (await Application.database.productDao.getAll())
-            .map((e) => ProductModel.fromEntity(e));
+        final productEntities = await Application.database.productDao.getAll();
+        final existingCategories =
+            productEntities.map((e) => e.categoryId).toSet();
+        final categories = Map.fromIterable(
+            await Application.database.categoryDao
+                .getAllByExpression((tbl) => tbl.id.isIn(existingCategories)),
+            key: (e) => e.id,
+            value: (e) => e);
+
+        final products = productEntities.map(
+            (e) => ProductModel.fromEntity(e, categories[e.categoryId].name));
         yield ProductsLoaded(products: products.toList());
       } catch (error) {
         yield ProductsError();
@@ -28,9 +38,18 @@ class ProductsBloc extends Bloc<ProductsEvent, ProductsState> {
       try {
         await Application.database.productDao.deleteById(event.id);
         yield ProductsDeleted();
-        final products = (await Application.database.productDao.getAll())
-            .map((e) => ProductModel.fromEntity(e));
-        yield ProductsLoaded(products: products);
+        final productEntities = await Application.database.productDao.getAll();
+        final existingCategories =
+            productEntities.map((e) => e.categoryId).toSet();
+        final categories = Map.fromIterable(
+            await Application.database.categoryDao
+                .getAllByExpression((tbl) => tbl.id.isIn(existingCategories)),
+            key: (e) => e.id,
+            value: (e) => e);
+
+        final products = productEntities.map(
+            (e) => ProductModel.fromEntity(e, categories[e.categoryId].name));
+        yield ProductsLoaded(products: products.toList());
       } catch (error) {
         yield ProductsError();
       }

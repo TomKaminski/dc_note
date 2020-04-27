@@ -1,3 +1,4 @@
+import 'package:DC_Note/pages/category_selector/category_screen.dart';
 import 'package:DC_Note/pages/products/product_list_item.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -40,6 +41,9 @@ class ProductsScreenState extends State<ProductsScreen> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () async {
+          // await Navigator.of(context).push(
+          //     MaterialPageRoute(builder: (ctx) => CategorySelectorScreen()));
+
           dynamic result = await Navigator.of(context).pushNamed("/addProduct");
           if (result == true) {
             bloc.add(LoadProductsEvent());

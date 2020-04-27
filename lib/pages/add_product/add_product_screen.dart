@@ -1,7 +1,9 @@
 import 'package:DC_Note/core/bloc/boolean_state.dart';
+import 'package:DC_Note/core/widgets/form/base_checkbox_field_widget.dart';
 import 'package:DC_Note/core/widgets/form/base_datepicker_field_widget.dart';
 import 'package:DC_Note/core/widgets/form/base_dropdown_field_widget.dart';
 import 'package:DC_Note/core/widgets/form/base_form_submit_button.dart';
+import 'package:DC_Note/core/widgets/form/base_selector_field_widget.dart';
 import 'package:DC_Note/core/widgets/form/base_text_field_widget.dart';
 import 'package:DC_Note/pages/add_product/bloc/add_product_bloc.dart';
 import 'package:flutter/material.dart';
@@ -77,26 +79,39 @@ class AddProductScreenState extends State<AddProductScreen> {
                         isDisabled: currentState.isProcessing,
                         initialData: null,
                         isRequired: true),
-                    BaseTextFieldWidget(
-                        title: "Pojemność jednej sztuki",
+                    // BaseTextFieldWidget(
+                    //     title: "Pojemność jednej sztuki",
+                    //     isDisabled: currentState.isProcessing,
+                    //     blocField: bloc.amountPerItemField,
+                    //     initialData: null,
+                    //     isRequired: true),
+                    // BaseDropdownFieldWidget(
+                    //   isRequired: true,
+                    //   blocField: bloc.amountSuffixField,
+                    //   isDisabled: currentState.isProcessing,
+                    //   initialData: null,
+                    //   title: "Oznaczenie pojemności",
+                    //   values: ["ml", "kg", "l", "g"],
+                    // ),
+                    BaseSelectorFieldWidget(
+                        title: "Kategoria",
                         isDisabled: currentState.isProcessing,
-                        blocField: bloc.amountPerItemField,
+                        blocField: bloc.categoryField,
                         initialData: null,
                         isRequired: true),
-                    BaseDropdownFieldWidget(
-                      isRequired: true,
-                      blocField: bloc.amountSuffixField,
-                      isDisabled: currentState.isProcessing,
-                      initialData: null,
-                      title: "Oznaczenie pojemności",
-                      values: ["ml", "kg", "l", "g"],
-                    ),
                     BaseDatePickerFieldWidget(
                         title: "Data waznosci",
                         isDisabled: currentState.isProcessing,
                         blocField: bloc.useUntilField,
                         initialData: null,
                         isRequired: true),
+                    BaseCheckboxFieldWidget(
+                        title: "Aktualnie używam?",
+                        isDisabled: currentState.isProcessing,
+                        blocField: bloc.inUseField,
+                        initialData: false,
+                        isRequired: true),
+
                     Padding(
                       padding: const EdgeInsets.symmetric(vertical: 24.0),
                       child: FormSubmitButton(

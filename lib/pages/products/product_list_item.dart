@@ -45,8 +45,7 @@ class ProductListItemWidget extends StatelessWidget {
           },
         );
       },
-      title: Text(
-          "${product.quantity}x ${product.name} (${product.amountPerItem}${product.amountSuffixKey})",
+      title: Text("${product.quantity}x ${product.name}",
           style: TextStyle(fontSize: 20, fontWeight: FontWeight.w500)),
       subtitle: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -56,10 +55,9 @@ class ProductListItemWidget extends StatelessWidget {
             "Ważne do ${product.useUntil.toLocal().toString()}",
             style: TextStyle(fontSize: 16),
           ),
-          SizedBox(height: 4),
           Text(
-            "${product.quantity * product.amountPerItem}${product.amountSuffixKey}",
-            style: TextStyle(fontSize: 14, fontStyle: FontStyle.italic),
+            "Kategoria ${product.categoryName}",
+            style: TextStyle(fontSize: 16),
           ),
         ],
       ),
