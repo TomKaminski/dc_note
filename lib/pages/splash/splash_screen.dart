@@ -13,7 +13,7 @@ class SplashScreen extends StatelessWidget {
             bloc: BlocProvider.of<SplashBloc>(context),
             listener: (BuildContext context, state) {
               if (state is SplashFinished) {
-                Navigator.of(context).pushReplacementNamed("/products");
+                Navigator.of(context).pushReplacementNamed("/tabs");
               }
             },
             child: Scaffold(

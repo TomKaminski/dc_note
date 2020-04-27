@@ -1,6 +1,7 @@
 import 'package:DC_Note/pages/add_product/add_product_screen.dart';
 import 'package:DC_Note/pages/products/products_screen.dart';
 import 'package:DC_Note/pages/splash/splash_screen.dart';
+import 'package:DC_Note/pages/tabs/tabs_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
@@ -20,7 +21,7 @@ class AppComponent extends StatefulWidget {
 }
 
 class AppComponentState extends State<AppComponent> {
-  final mainColor = Colors.pink;
+  final mainColor = Color.fromARGB(255, 137, 181, 240);
 
   @override
   Widget build(BuildContext context) {
@@ -40,7 +41,7 @@ class AppComponentState extends State<AppComponent> {
             backgroundColor: mainColor,
             contentTextStyle:
                 TextStyle(fontWeight: FontWeight.bold, height: 1.5)),
-        primaryColorLight: Color.fromARGB(255, 85, 58, 144),
+        primaryColorLight: mainColor,
         scaffoldBackgroundColor: Colors.white,
         appBarTheme: AppBarTheme(
             elevation: 0,
@@ -55,7 +56,7 @@ class AppComponentState extends State<AppComponent> {
       initialRoute: "/",
       routes: {
         '/': (ctx) => SplashScreen(),
-        '/products': (ctx) => ProductsScreen(),
+        '/tabs': (ctx) => TabsScreen(),
         '/addProduct': (ctx) => AddProductScreen()
       },
     );

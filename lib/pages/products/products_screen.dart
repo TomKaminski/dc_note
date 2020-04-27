@@ -1,4 +1,3 @@
-import 'package:DC_Note/pages/category_selector/category_screen.dart';
 import 'package:DC_Note/pages/products/product_list_item.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -30,13 +29,24 @@ class ProductsScreenState extends State<ProductsScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final mainColor = Color.fromARGB(255, 137, 181, 240);
     return Scaffold(
       appBar: AppBar(
+        flexibleSpace: Container(
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+                begin: Alignment.bottomCenter,
+                end: Alignment.topCenter,
+                colors: <Color>[mainColor, Colors.white],
+                stops: [0.3, 1]),
+          ),
+        ),
         centerTitle: false,
         title: Text(
           "Twoje produkty",
           textAlign: TextAlign.start,
-          style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+          style: TextStyle(
+              fontSize: 24, fontWeight: FontWeight.bold, color: Colors.white),
         ),
       ),
       floatingActionButton: FloatingActionButton(
@@ -49,7 +59,10 @@ class ProductsScreenState extends State<ProductsScreen> {
             bloc.add(LoadProductsEvent());
           }
         },
-        child: Icon(Icons.add),
+        child: Icon(
+          Icons.add,
+          color: Colors.white,
+        ),
       ),
       body: BlocConsumer<ProductsBloc, ProductsState>(
         bloc: bloc,

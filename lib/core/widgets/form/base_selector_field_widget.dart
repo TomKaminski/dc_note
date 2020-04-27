@@ -1,19 +1,21 @@
 import 'package:DC_Note/core/bloc/bloc_field.dart';
+import 'package:DC_Note/core/bloc/selector_bloc/selector_bloc.dart';
 import 'package:DC_Note/core/bloc/validators/not_empty_validator.dart';
 import 'package:DC_Note/core/models/selectors/base_selector_item.dart';
-import 'package:DC_Note/pages/category_selector/category_screen.dart';
 import 'package:flutter/material.dart';
 
-class BaseSelectorFieldWidget<T extends BaseSelectorItem>
-    extends StatefulWidget {
+class BaseSelectorFieldWidget<TItem extends BaseSelectorItem,
+    TBloc extends SelectorBloc<TItem>> extends StatefulWidget {
   final DateTime initialData;
-  final BehaviorBlocField<T> blocField;
+  final BehaviorBlocField<TItem> blocField;
   final Stream<bool> disabledStream;
   final bool isDisabled;
   final String title;
   final bool isRequired;
   final Widget suffix;
   final Image prefixImage;
+
+  final Widget Function() onSelectorScreenCreate;
 
   const BaseSelectorFieldWidget(
       {Key key,
@@ -24,15 +26,17 @@ class BaseSelectorFieldWidget<T extends BaseSelectorItem>
       this.suffix,
       this.prefixImage,
       this.disabledStream,
-      this.isDisabled = false})
+      this.isDisabled = false,
+      @required this.onSelectorScreenCreate})
       : super(key: key);
 
   @override
-  _BaseSelectorFieldWidgetState<T> createState() =>
-      _BaseSelectorFieldWidgetState<T>();
+  _BaseSelectorFieldWidgetState<TItem> createState() =>
+      _BaseSelectorFieldWidgetState<TItem>();
 }
 
-class _BaseSelectorFieldWidgetState<T> extends State<BaseSelectorFieldWidget> {
+class _BaseSelectorFieldWidgetState<TItem>
+    extends State<BaseSelectorFieldWidget> {
   String inputError;
 
   @override
@@ -76,9 +80,11 @@ class _BaseSelectorFieldWidgetState<T> extends State<BaseSelectorFieldWidget> {
                       if (isDisabled || widget.isDisabled) {
                         return;
                       }
-                      final T result = await Navigator.of(context).push(
-                          MaterialPageRoute(
-                              builder: (ctx) => CategorySelectorScreen()));
+                      final TItem result = await Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (ctx) => widget.onSelectorScreenCreate(),
+                        ),
+                      );
 
                       if (result == null) {
                         return;
