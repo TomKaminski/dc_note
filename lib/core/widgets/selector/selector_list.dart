@@ -14,7 +14,7 @@ class SelectorList<TItem extends BaseSelectorItem,
           return Center(child: CircularProgressIndicator());
         }
 
-        if (state is SelectorLoadedState<BaseSelectorItem>) {
+        if (state is SelectorLoadedState<TItem>) {
           return ListView.builder(
             itemBuilder: (ctx, i) {
               final element = state.items[i];
@@ -36,18 +36,6 @@ class SelectorList<TItem extends BaseSelectorItem,
       listener: (BuildContext context, SelectorState state) {},
     );
   }
-
-  // ListTile buildListTile(BaseSelectorItem element) {
-  //   return ListTile(
-  //     title: Text(element.title,
-  //         style: element.parentId == null
-  //             ? TextStyle(fontWeight: FontWeight.bold, fontSize: 18)
-  //             : TextStyle(fontWeight: FontWeight.normal, fontSize: 15)),
-  //     leading: element.parentId == null
-  //         ? Icon(Icons.image)
-  //         : Icon(Icons.arrow_right),
-  //   );
-  // }
 
   ListTile buildListTile(TItem element) {
     return ListTile(
