@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 
 class BaseSelectorFieldWidget<TItem extends BaseSelectorItem,
     TBloc extends SelectorBloc<TItem>> extends StatefulWidget {
-  final DateTime initialData;
+  final TItem initialData;
   final BehaviorBlocField<TItem> blocField;
   final Stream<bool> disabledStream;
   final bool isDisabled;
@@ -119,11 +119,11 @@ class _BaseSelectorFieldWidgetState<TItem>
       return BaseSelectorItem.getSelectorWidget(
           widget.blocField.value, disabled);
     } else {
-      return Text(widget.blocField.value?.toString() ?? widget.title,
+      return Text(widget.title,
           style: TextStyle(
               fontSize: 15,
               fontWeight: FontWeight.bold,
-              color: disabled ? Colors.black12 : Colors.black54));
+              color: disabled ? Colors.black12 : Colors.black87));
     }
   }
 }

@@ -1,10 +1,11 @@
+import 'package:DC_Note/core/statics/colors.dart';
 import 'package:flutter/material.dart';
 
 abstract class BaseSelectorItem {
   final String title;
   final int id;
 
-  IconData get icon;
+  AssetImage get icon;
 
   BaseSelectorItem(this.title, this.id);
 
@@ -12,7 +13,11 @@ abstract class BaseSelectorItem {
     final List<Widget> items = [];
     if (item.icon != null) {
       items.addAll([
-        Icon(item.icon),
+        ImageIcon(
+          item.icon,
+          size: 28,
+          color: AppColors.main,
+        ),
         SizedBox(width: 4),
       ]);
     }
@@ -22,7 +27,8 @@ abstract class BaseSelectorItem {
       style: TextStyle(
           fontSize: 15,
           fontWeight: FontWeight.bold,
-          color: (isDisabled) ? Colors.black12 : Colors.black54),
+          letterSpacing: 1,
+          color: (isDisabled) ? Colors.black12 : AppColors.main),
     ));
     return Row(
       children: items,

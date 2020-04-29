@@ -1,5 +1,6 @@
 import 'package:DC_Note/core/bloc/bloc_field.dart';
 import 'package:DC_Note/core/bloc/validators/not_empty_validator.dart';
+import 'package:DC_Note/core/statics/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -88,9 +89,10 @@ class _BaseTextFieldWidgetState extends State<BaseTextFieldWidget> {
                     style: TextStyle(
                         fontSize: 15,
                         fontWeight: FontWeight.bold,
+                        letterSpacing: 1,
                         color: (isDisabled || widget.isDisabled)
                             ? Colors.black12
-                            : Colors.black54),
+                            : AppColors.main),
                     cursorColor: Colors.grey,
                     obscureText: _obscureText,
                     keyboardType: widget.onlyNumbers
@@ -121,7 +123,9 @@ class _BaseTextFieldWidgetState extends State<BaseTextFieldWidget> {
                           child: widget.suffix,
                         ),
                         hintText: widget.title,
-                        hintStyle: TextStyle(fontWeight: FontWeight.bold)))
+                        hintStyle: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            color: Colors.black87)))
               ],
             ),
           );

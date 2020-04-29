@@ -1,5 +1,6 @@
 import 'package:DC_Note/core/bloc/bloc_field.dart';
 import 'package:DC_Note/core/bloc/validators/not_empty_validator.dart';
+import 'package:DC_Note/core/statics/colors.dart';
 import 'package:flutter/material.dart';
 
 class BaseCheckboxFieldWidget extends StatefulWidget {
@@ -66,7 +67,9 @@ class _BaseCheckboxFieldWidgetState extends State<BaseCheckboxFieldWidget> {
                   Text(
                     widget.title,
                     style: TextStyle(
-                        color: Colors.black87,
+                        color: (widget.blocField.value ?? false)
+                            ? AppColors.main
+                            : Colors.black87,
                         fontSize: 14,
                         fontWeight: FontWeight.bold),
                   ),

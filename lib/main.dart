@@ -1,3 +1,4 @@
+import 'package:DC_Note/core/statics/colors.dart';
 import 'package:DC_Note/pages/add_product/add_product_screen.dart';
 import 'package:DC_Note/pages/products/products_screen.dart';
 import 'package:DC_Note/pages/splash/splash_screen.dart';
@@ -21,8 +22,6 @@ class AppComponent extends StatefulWidget {
 }
 
 class AppComponentState extends State<AppComponent> {
-  final mainColor = Color.fromARGB(255, 137, 181, 240);
-
   @override
   Widget build(BuildContext context) {
     final app = MaterialApp(
@@ -34,24 +33,19 @@ class AppComponentState extends State<AppComponent> {
       ],
       supportedLocales: S.delegate.supportedLocales,
       theme: ThemeData(
-        accentColor: mainColor,
-        canvasColor: mainColor,
-        primaryColor: mainColor,
+        fontFamily: "Montserrat",
+        accentColor: AppColors.main,
+        canvasColor: AppColors.main,
+        primaryColor: AppColors.main,
         snackBarTheme: SnackBarThemeData(
-            backgroundColor: mainColor,
+            backgroundColor: AppColors.main,
             contentTextStyle:
                 TextStyle(fontWeight: FontWeight.bold, height: 1.5)),
-        primaryColorLight: mainColor,
+        primaryColorLight: AppColors.main,
         scaffoldBackgroundColor: Colors.white,
         appBarTheme: AppBarTheme(
-            elevation: 0,
-            color: Colors.white,
-            textTheme: TextTheme(
-                headline6: TextStyle(
-                    color: Colors.black,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 18)),
-            iconTheme: IconThemeData(color: Colors.black)),
+            color: AppColors.main,
+            iconTheme: IconThemeData(color: Colors.white)),
       ),
       initialRoute: "/",
       routes: {

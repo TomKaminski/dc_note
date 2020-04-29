@@ -1,4 +1,5 @@
 import 'package:DC_Note/core/bloc/boolean_state.dart';
+import 'package:DC_Note/core/statics/colors.dart';
 import 'package:DC_Note/core/widgets/form/base_checkbox_field_widget.dart';
 import 'package:DC_Note/core/widgets/form/base_datepicker_field_widget.dart';
 import 'package:DC_Note/core/widgets/form/base_form_submit_button.dart';
@@ -29,18 +30,14 @@ class AddProductScreenState extends State<AddProductScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-          bottom: PreferredSize(
-        preferredSize: const Size.fromHeight(30),
-        child: Container(
-          padding: EdgeInsets.symmetric(horizontal: 20),
-          alignment: AlignmentDirectional.topStart,
-          child: Text(
-            "Dodaj produkt",
-            textAlign: TextAlign.start,
-            style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
-          ),
+        centerTitle: true,
+        title: Text(
+          "Dodaj produkt",
+          textAlign: TextAlign.start,
+          style: TextStyle(
+              fontSize: 24, fontWeight: FontWeight.w300, color: Colors.white),
         ),
-      )),
+      ),
       body: BlocConsumer<AddProductBloc, BooleanState>(
         bloc: bloc,
         builder: (
@@ -57,12 +54,12 @@ class AddProductScreenState extends State<AddProductScreen> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 16.0),
+                      padding: const EdgeInsets.symmetric(vertical: 12.0),
                       child: Text(
                         "Dodaj produkt wypełniając odpowiednie pola.",
                         style: TextStyle(
-                            color: Colors.grey,
-                            fontWeight: FontWeight.bold,
+                            color: AppColors.main,
+                            fontWeight: FontWeight.w600,
                             fontSize: 14,
                             height: 1.6),
                       ),

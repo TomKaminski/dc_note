@@ -1,5 +1,6 @@
 import 'package:DC_Note/core/bloc/selector_bloc/selector_bloc.dart';
 import 'package:DC_Note/core/models/selectors/base_selector_item.dart';
+import 'package:DC_Note/core/statics/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -15,17 +16,23 @@ class SelectorList<TItem extends BaseSelectorItem,
         }
 
         if (state is SelectorLoadedState<TItem>) {
-          return ListView.builder(
-            itemBuilder: (ctx, i) {
-              final element = state.items[i];
-              return InkWell(
-                onTap: () {
-                  Navigator.of(context).pop(element);
+          return SafeArea(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(vertical: 8),
+              child: ListView.builder(
+                itemBuilder: (ctx, i) {
+                  final element = state.items[i];
+                  return InkWell(
+                    highlightColor: AppColors.softMain,
+                    onTap: () {
+                      Navigator.of(context).pop(element);
+                    },
+                    child: buildListTile(element),
+                  );
                 },
-                child: buildListTile(element),
-              );
-            },
-            itemCount: state.items.length,
+                itemCount: state.items.length,
+              ),
+            ),
           );
         }
 

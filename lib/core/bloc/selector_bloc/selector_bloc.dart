@@ -17,12 +17,14 @@ abstract class SelectorBloc<TItem extends BaseSelectorItem>
     SelectorEvent event,
   ) async* {
     try {
-      final items = await fetchItems();
-      yield SelectorLoadedState(items);
+      if (event is SelectorFetchEvent) {
+        final items = await fetchItems(event.searchPhrase);
+        yield SelectorLoadedState(items);
+      }
     } catch (e) {
       yield SelectorErrorState();
     }
   }
 
-  Future<List<TItem>> fetchItems();
+  Future<List<TItem>> fetchItems(String searchPhrase);
 }

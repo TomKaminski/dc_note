@@ -1,5 +1,6 @@
 import 'package:DC_Note/core/bloc/bloc_field.dart';
 import 'package:DC_Note/core/bloc/validators/not_empty_validator.dart';
+import 'package:DC_Note/core/statics/colors.dart';
 import 'package:flutter/material.dart';
 
 class BaseDatePickerFieldWidget extends StatefulWidget {
@@ -94,9 +95,12 @@ class _BaseDatePickerFieldWidgetState extends State<BaseDatePickerFieldWidget> {
                               style: TextStyle(
                                   fontSize: 15,
                                   fontWeight: FontWeight.bold,
+                                  letterSpacing: 1,
                                   color: (isDisabled || widget.isDisabled)
                                       ? Colors.black12
-                                      : Colors.black54)),
+                                      : widget.blocField.value != null
+                                          ? AppColors.main
+                                          : Colors.black87)),
                           SizedBox(
                             height: 12,
                           ),

@@ -2,16 +2,68 @@ import 'package:DC_Note/core/statics/application.dart';
 import 'package:DC_Note/database/app_database.dart';
 import 'package:moor_flutter/moor_flutter.dart';
 
-class CategoryKeys {
-  static String hair = "CATEGORY_HAIR";
-  static String face = "CATEGORY_FACE";
-  static String colour = "CATEGORY_COLOUR";
-  static String body = "CATEGORY_BODY";
-  static String nail = "CATEGORY_NAIL";
+enum CategoryKeyEnum { hair, face, colour, body, nail }
+
+extension CategoryKeyEnumExtension on CategoryKeyEnum {
+  String get name {
+    switch (this) {
+      case CategoryKeyEnum.body:
+        return "CATEGORY_BODY";
+      case CategoryKeyEnum.face:
+        return "CATEGORY_FACE";
+      case CategoryKeyEnum.colour:
+        return "CATEGORY_COLOUR";
+      case CategoryKeyEnum.hair:
+        return "CATEGORY_HAIR";
+      case CategoryKeyEnum.nail:
+        return "CATEGORY_NAIL";
+    }
+    return null;
+  }
+
+  String get imageName {
+    switch (this) {
+      case CategoryKeyEnum.body:
+        return "body.png";
+      case CategoryKeyEnum.face:
+        return "face-mask.png";
+      case CategoryKeyEnum.colour:
+        return "make-up.png";
+      case CategoryKeyEnum.hair:
+        return "comb.png";
+      case CategoryKeyEnum.nail:
+        return "nail-polish.png";
+    }
+    return null;
+  }
+
+  static CategoryKeyEnum fromString(String string) {
+    if (string.startsWith("CATEGORY_BODY")) {
+      return CategoryKeyEnum.body;
+    }
+
+    if (string.startsWith("CATEGORY_NAIL")) {
+      return CategoryKeyEnum.nail;
+    }
+
+    if (string.startsWith("CATEGORY_FACE")) {
+      return CategoryKeyEnum.face;
+    }
+
+    if (string.startsWith("CATEGORY_COLOUR")) {
+      return CategoryKeyEnum.colour;
+    }
+
+    if (string.startsWith("CATEGORY_HAIR")) {
+      return CategoryKeyEnum.hair;
+    }
+
+    return null;
+  }
 }
 
 class CategoriesProvider {
-  Future<List<CategoryEntity>> fetchCategories() async {
+  Future<List<CategoryEntity>> fetchCategories(String searchPhrase) async {
     final mainEntities = await Application.database.categoryDao
         .getAllByExpression((tbl) => isNull(tbl.parentId));
 
@@ -20,7 +72,10 @@ class CategoriesProvider {
     for (var element in mainEntities) {
       result.add(element);
       final childEntities = await Application.database.categoryDao
-          .getAllByExpression((tbl) => tbl.parentId.equals(element.id));
+          .getAllByExpression((tbl) => searchPhrase?.isNotEmpty == true
+              ? tbl.parentId.equals(element.id) &
+                  tbl.name.like("%$searchPhrase%")
+              : tbl.parentId.equals(element.id));
       result.addAll(childEntities);
     }
 
@@ -42,31 +97,30 @@ class CategoriesProvider {
         id: null,
         name: "Włosy",
         parentId: null,
-        key: CategoryKeys.hair,
+        key: CategoryKeyEnum.hair.name,
       ),
       CategoryEntity(
-        id: null,
-        name: "Twarz",
-        parentId: null,
-        key: CategoryKeys.face,
-      ),
+          id: null,
+          name: "Twarz",
+          parentId: null,
+          key: CategoryKeyEnum.face.name),
       CategoryEntity(
         id: null,
         name: "Kolorówka",
         parentId: null,
-        key: CategoryKeys.colour,
+        key: CategoryKeyEnum.colour.name,
       ),
       CategoryEntity(
         id: null,
         name: "Ciało",
         parentId: null,
-        key: CategoryKeys.body,
+        key: CategoryKeyEnum.body.name,
       ),
       CategoryEntity(
         id: null,
         name: "Paznokcie",
         parentId: null,
-        key: CategoryKeys.nail,
+        key: CategoryKeyEnum.nail.name,
       ),
     ];
 
@@ -76,7 +130,7 @@ class CategoriesProvider {
 
   _insertOrReplaceHairSubcategories() async {
     CategoryEntity parent = await Application.database.categoryDao
-        .getSingle((tbl) => tbl.key.equals(CategoryKeys.hair));
+        .getSingle((tbl) => tbl.key.equals(CategoryKeyEnum.hair.name));
 
     List<String> categoryNames = [
       "do stylizacji włosów",
@@ -100,7 +154,7 @@ class CategoriesProvider {
             id: null,
             name: e.value,
             parentId: parent.id,
-            key: CategoryKeys.hair + "_${e.key}"))
+            key: CategoryKeyEnum.hair.name + "_${e.key}"))
         .toList();
 
     await Application.database.categoryDao
@@ -109,7 +163,7 @@ class CategoriesProvider {
 
   _insertOrReplaceFaceSubcategories() async {
     CategoryEntity parent = await Application.database.categoryDao
-        .getSingle((tbl) => tbl.key.equals(CategoryKeys.face));
+        .getSingle((tbl) => tbl.key.equals(CategoryKeyEnum.face.name));
 
     List<String> categoryNames = [
       "ampułki / serum / olejki do twarzy",
@@ -135,7 +189,7 @@ class CategoriesProvider {
             id: null,
             name: e.value,
             parentId: parent.id,
-            key: CategoryKeys.face + "_${e.key}"))
+            key: CategoryKeyEnum.face.name + "_${e.key}"))
         .toList();
 
     await Application.database.categoryDao
@@ -144,7 +198,7 @@ class CategoriesProvider {
 
   _insertOrReplaceColourSubcategories() async {
     CategoryEntity parent = await Application.database.categoryDao
-        .getSingle((tbl) => tbl.key.equals(CategoryKeys.colour));
+        .getSingle((tbl) => tbl.key.equals(CategoryKeyEnum.colour.name));
 
     List<String> categoryNames = [
       "bazy pod makijaż / pod cienie",
@@ -173,7 +227,7 @@ class CategoriesProvider {
             id: null,
             name: e.value,
             parentId: parent.id,
-            key: CategoryKeys.colour + "_${e.key}"))
+            key: CategoryKeyEnum.colour.name + "_${e.key}"))
         .toList();
 
     await Application.database.categoryDao
@@ -182,7 +236,7 @@ class CategoriesProvider {
 
   _insertOrReplaceBodySubcategories() async {
     CategoryEntity parent = await Application.database.categoryDao
-        .getSingle((tbl) => tbl.key.equals(CategoryKeys.body));
+        .getSingle((tbl) => tbl.key.equals(CategoryKeyEnum.body.name));
 
     List<String> categoryNames = [
       "antyperspiranty / dezodoranty",
@@ -212,7 +266,7 @@ class CategoriesProvider {
             id: null,
             name: e.value,
             parentId: parent.id,
-            key: CategoryKeys.body + "_${e.key}"))
+            key: CategoryKeyEnum.body.name + "_${e.key}"))
         .toList();
 
     await Application.database.categoryDao
@@ -221,7 +275,7 @@ class CategoriesProvider {
 
   _insertOrReplaceNailSubcategories() async {
     CategoryEntity parent = await Application.database.categoryDao
-        .getSingle((tbl) => tbl.key.equals(CategoryKeys.nail));
+        .getSingle((tbl) => tbl.key.equals(CategoryKeyEnum.nail.name));
 
     List<String> categoryNames = [
       "aceton",
@@ -244,7 +298,7 @@ class CategoriesProvider {
             id: null,
             name: e.value,
             parentId: parent.id,
-            key: CategoryKeys.nail + "_${e.key}"))
+            key: CategoryKeyEnum.nail.name + "_${e.key}"))
         .toList();
 
     await Application.database.categoryDao

@@ -5,6 +5,10 @@ abstract class SelectorEvent extends Equatable {
 }
 
 class SelectorFetchEvent extends SelectorEvent {
+  final String searchPhrase;
+
+  SelectorFetchEvent(this.searchPhrase);
+
   @override
   List<Object> get props => [];
 }
