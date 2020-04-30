@@ -18,7 +18,7 @@ class SplashBloc extends Bloc<SplashInitEvent, SplashState> {
   ) async* {
     yield SplashLoading();
     await CategoriesProvider().insertOrReplaceCategories();
-    final categories = await Application.database.categoryDao.getAll();
+    await Future.delayed(Duration(seconds: 2));
     yield SplashFinished();
   }
 }

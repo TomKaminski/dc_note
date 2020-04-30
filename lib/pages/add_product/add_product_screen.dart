@@ -1,4 +1,5 @@
 import 'package:DC_Note/core/bloc/boolean_state.dart';
+import 'package:DC_Note/core/models/product_model.dart';
 import 'package:DC_Note/core/statics/colors.dart';
 import 'package:DC_Note/core/widgets/form/base_checkbox_field_widget.dart';
 import 'package:DC_Note/core/widgets/form/base_datepicker_field_widget.dart';
@@ -6,11 +7,15 @@ import 'package:DC_Note/core/widgets/form/base_form_submit_button.dart';
 import 'package:DC_Note/core/widgets/form/base_selector_field_widget.dart';
 import 'package:DC_Note/core/widgets/form/base_text_field_widget.dart';
 import 'package:DC_Note/pages/add_product/bloc/add_product_bloc.dart';
-import 'package:DC_Note/pages/category_selector/category_selector_screen.dart';
+import 'package:DC_Note/pages/category_selector/category_selector_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class AddProductScreen extends StatefulWidget {
+  final ProductModel editModel;
+
+  const AddProductScreen({Key key, this.editModel}) : super(key: key);
+
   @override
   AddProductScreenState createState() {
     return AddProductScreenState();
@@ -18,7 +23,12 @@ class AddProductScreen extends StatefulWidget {
 }
 
 class AddProductScreenState extends State<AddProductScreen> {
-  final AddProductBloc bloc = AddProductBloc();
+  AddProductBloc bloc;
+  @override
+  void initState() {
+    bloc = AddProductBloc(widget.editModel);
+    super.initState();
+  }
 
   @override
   void dispose() {
@@ -32,7 +42,7 @@ class AddProductScreenState extends State<AddProductScreen> {
       appBar: AppBar(
         centerTitle: true,
         title: Text(
-          "Dodaj produkt",
+          widget.editModel != null ? "Edytuj produkt" : "Dodaj produkt",
           textAlign: TextAlign.start,
           style: TextStyle(
               fontSize: 24, fontWeight: FontWeight.w300, color: Colors.white),
@@ -56,7 +66,7 @@ class AddProductScreenState extends State<AddProductScreen> {
                     Padding(
                       padding: const EdgeInsets.symmetric(vertical: 12.0),
                       child: Text(
-                        "Dodaj produkt wypełniając odpowiednie pola.",
+                        'Dodaj produkt wypełniając odpowiednie pola. Data ważności oraz pole "Aktualnie używam" są opcjonalne. W każdej chwili możesz je zmienić w widoku edycji produktu.',
                         style: TextStyle(
                             color: AppColors.main,
                             fontWeight: FontWeight.w600,
@@ -68,13 +78,14 @@ class AddProductScreenState extends State<AddProductScreen> {
                         title: "Nazwa produktu",
                         blocField: bloc.nameField,
                         isDisabled: currentState.isProcessing,
-                        initialData: null,
+                        initialData: bloc.nameField.value,
                         isRequired: true),
                     BaseTextFieldWidget(
                         blocField: bloc.quantityField,
                         title: "Ilość",
+                        onlyNumbers: true,
                         isDisabled: currentState.isProcessing,
-                        initialData: null,
+                        initialData: bloc.quantityField.value,
                         isRequired: true),
                     BaseSelectorFieldWidget(
                       title: "Kategoria",
@@ -82,7 +93,7 @@ class AddProductScreenState extends State<AddProductScreen> {
                       blocField: bloc.categoryField,
                       initialData: null,
                       isRequired: true,
-                      onSelectorScreenCreate: () => CategorySelectorScreen(
+                      onSelectorScreenCreate: () => CategorySelectorPage(
                         title: "Wybierz kategorię",
                       ),
                     ),
@@ -90,13 +101,13 @@ class AddProductScreenState extends State<AddProductScreen> {
                         title: "Data waznosci",
                         isDisabled: currentState.isProcessing,
                         blocField: bloc.useUntilField,
-                        initialData: null,
+                        initialData: bloc.useUntilField.value,
                         isRequired: true),
                     BaseCheckboxFieldWidget(
-                        title: "Aktualnie używam?",
+                        title: "Aktualnie używam",
                         isDisabled: currentState.isProcessing,
                         blocField: bloc.inUseField,
-                        initialData: false,
+                        initialData: bloc.inUseField.value,
                         isRequired: true),
                     Padding(
                       padding: const EdgeInsets.symmetric(vertical: 24.0),
@@ -104,7 +115,7 @@ class AddProductScreenState extends State<AddProductScreen> {
                         disabledStream: bloc.isFormValid,
                         isDisabled: currentState.isProcessing,
                         onPressed: () => bloc.add(AddProductEvent()),
-                        text: "Dodaj produkt",
+                        text: "Zapisz produkt",
                       ),
                     ),
                   ],

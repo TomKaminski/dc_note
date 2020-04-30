@@ -1,5 +1,6 @@
 import 'package:DC_Note/core/statics/colors.dart';
-import 'package:DC_Note/pages/products/products_screen.dart';
+import 'package:DC_Note/pages/in_use_products/in_use_products_page.dart';
+import 'package:DC_Note/pages/products/products_page.dart';
 import 'package:clay_containers/constants.dart';
 import 'package:clay_containers/widgets/clay_containers.dart';
 import 'package:flutter/material.dart';
@@ -21,13 +22,11 @@ class _TabPageState extends State<TabsScreen> {
   Widget getChild() {
     switch (_selectedIndex) {
       case 0:
-        return ProductsScreen();
+        return ProductsPage();
       case 1:
-        return ProductsScreen();
-      case 2:
-        return ProductsScreen();
+        return InUseProductsPage();
       default:
-        return ProductsScreen();
+        return ProductsPage();
     }
   }
 
@@ -41,28 +40,30 @@ class _TabPageState extends State<TabsScreen> {
           type: BottomNavigationBarType.shifting,
           onTap: _onItemTapped,
           items: [
-            createBottomNavItem(0, "Produkty"),
-            createBottomNavItem(1, "Uzywane"),
+            createBottomNavItem(0, "Produkty", Icons.list),
+            createBottomNavItem(1, "Używane", Icons.mood),
           ]),
     );
   }
 
-  BottomNavigationBarItem createBottomNavItem(int index, String text) {
+  BottomNavigationBarItem createBottomNavItem(
+      int index, String text, IconData icon) {
     return BottomNavigationBarItem(
       backgroundColor: AppColors.main,
       title: Text(
         text,
-        style: TextStyle(color: Colors.white, fontWeight: FontWeight.w400),
+        style: TextStyle(color: Colors.white, fontWeight: FontWeight.w600),
       ),
       icon: ClayContainer(
         color: AppColors.main,
         curveType: CurveType.concave,
+        emboss: _selectedIndex == index,
         borderRadius: 40,
         spread: 1,
         child: Padding(
           padding: const EdgeInsets.all(8),
           child: Icon(
-            Icons.account_box,
+            icon,
             color: Colors.white,
           ),
         ),

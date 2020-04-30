@@ -11,7 +11,7 @@ class ProductEntity extends DataClass implements Insertable<ProductEntity> {
   final int id;
   final String name;
   final bool inUse;
-  final double quantity;
+  final int quantity;
   final int categoryId;
   final DateTime useUntil;
   ProductEntity(
@@ -20,7 +20,7 @@ class ProductEntity extends DataClass implements Insertable<ProductEntity> {
       @required this.inUse,
       @required this.quantity,
       @required this.categoryId,
-      @required this.useUntil});
+      this.useUntil});
   factory ProductEntity.fromData(
       Map<String, dynamic> data, GeneratedDatabase db,
       {String prefix}) {
@@ -28,14 +28,13 @@ class ProductEntity extends DataClass implements Insertable<ProductEntity> {
     final intType = db.typeSystem.forDartType<int>();
     final stringType = db.typeSystem.forDartType<String>();
     final boolType = db.typeSystem.forDartType<bool>();
-    final doubleType = db.typeSystem.forDartType<double>();
     final dateTimeType = db.typeSystem.forDartType<DateTime>();
     return ProductEntity(
       id: intType.mapFromDatabaseResponse(data['${effectivePrefix}id']),
       name: stringType.mapFromDatabaseResponse(data['${effectivePrefix}name']),
       inUse: boolType.mapFromDatabaseResponse(data['${effectivePrefix}in_use']),
-      quantity: doubleType
-          .mapFromDatabaseResponse(data['${effectivePrefix}quantity']),
+      quantity:
+          intType.mapFromDatabaseResponse(data['${effectivePrefix}quantity']),
       categoryId: intType
           .mapFromDatabaseResponse(data['${effectivePrefix}category_id']),
       useUntil: dateTimeType
@@ -49,7 +48,7 @@ class ProductEntity extends DataClass implements Insertable<ProductEntity> {
       id: serializer.fromJson<int>(json['id']),
       name: serializer.fromJson<String>(json['name']),
       inUse: serializer.fromJson<bool>(json['inUse']),
-      quantity: serializer.fromJson<double>(json['quantity']),
+      quantity: serializer.fromJson<int>(json['quantity']),
       categoryId: serializer.fromJson<int>(json['categoryId']),
       useUntil: serializer.fromJson<DateTime>(json['useUntil']),
     );
@@ -61,7 +60,7 @@ class ProductEntity extends DataClass implements Insertable<ProductEntity> {
       'id': serializer.toJson<int>(id),
       'name': serializer.toJson<String>(name),
       'inUse': serializer.toJson<bool>(inUse),
-      'quantity': serializer.toJson<double>(quantity),
+      'quantity': serializer.toJson<int>(quantity),
       'categoryId': serializer.toJson<int>(categoryId),
       'useUntil': serializer.toJson<DateTime>(useUntil),
     };
@@ -90,7 +89,7 @@ class ProductEntity extends DataClass implements Insertable<ProductEntity> {
           {int id,
           String name,
           bool inUse,
-          double quantity,
+          int quantity,
           int categoryId,
           DateTime useUntil}) =>
       ProductEntity(
@@ -139,7 +138,7 @@ class ProductTableCompanion extends UpdateCompanion<ProductEntity> {
   final Value<int> id;
   final Value<String> name;
   final Value<bool> inUse;
-  final Value<double> quantity;
+  final Value<int> quantity;
   final Value<int> categoryId;
   final Value<DateTime> useUntil;
   const ProductTableCompanion({
@@ -154,19 +153,18 @@ class ProductTableCompanion extends UpdateCompanion<ProductEntity> {
     this.id = const Value.absent(),
     @required String name,
     @required bool inUse,
-    @required double quantity,
+    @required int quantity,
     @required int categoryId,
-    @required DateTime useUntil,
+    this.useUntil = const Value.absent(),
   })  : name = Value(name),
         inUse = Value(inUse),
         quantity = Value(quantity),
-        categoryId = Value(categoryId),
-        useUntil = Value(useUntil);
+        categoryId = Value(categoryId);
   ProductTableCompanion copyWith(
       {Value<int> id,
       Value<String> name,
       Value<bool> inUse,
-      Value<double> quantity,
+      Value<int> quantity,
       Value<int> categoryId,
       Value<DateTime> useUntil}) {
     return ProductTableCompanion(
@@ -219,11 +217,11 @@ class $ProductTableTable extends ProductTable
   }
 
   final VerificationMeta _quantityMeta = const VerificationMeta('quantity');
-  GeneratedRealColumn _quantity;
+  GeneratedIntColumn _quantity;
   @override
-  GeneratedRealColumn get quantity => _quantity ??= _constructQuantity();
-  GeneratedRealColumn _constructQuantity() {
-    return GeneratedRealColumn(
+  GeneratedIntColumn get quantity => _quantity ??= _constructQuantity();
+  GeneratedIntColumn _constructQuantity() {
+    return GeneratedIntColumn(
       'quantity',
       $tableName,
       false,
@@ -250,7 +248,7 @@ class $ProductTableTable extends ProductTable
     return GeneratedDateTimeColumn(
       'use_until',
       $tableName,
-      false,
+      true,
     );
   }
 
@@ -297,8 +295,6 @@ class $ProductTableTable extends ProductTable
     if (d.useUntil.present) {
       context.handle(_useUntilMeta,
           useUntil.isAcceptableValue(d.useUntil.value, _useUntilMeta));
-    } else if (isInserting) {
-      context.missing(_useUntilMeta);
     }
     return context;
   }
@@ -324,7 +320,7 @@ class $ProductTableTable extends ProductTable
       map['in_use'] = Variable<bool, BoolType>(d.inUse.value);
     }
     if (d.quantity.present) {
-      map['quantity'] = Variable<double, RealType>(d.quantity.value);
+      map['quantity'] = Variable<int, IntType>(d.quantity.value);
     }
     if (d.categoryId.present) {
       map['category_id'] = Variable<int, IntType>(d.categoryId.value);

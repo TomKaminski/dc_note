@@ -59,55 +59,56 @@ class _BaseSelectorFieldWidgetState<TItem>
         stream: widget.disabledStream ?? Stream.value(false),
         builder: (context, snapshot) {
           final isDisabled = snapshot.data == true;
-          return Padding(
-            padding: const EdgeInsets.symmetric(vertical: 12.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                AnimatedOpacity(
-                  opacity: widget.blocField.value == null ? 0 : 1,
-                  duration: Duration(milliseconds: 300),
-                  child: Text(
-                    widget.title,
-                    style: TextStyle(
-                        color: Colors.black87,
-                        fontSize: 14,
-                        fontWeight: FontWeight.bold),
-                  ),
+          return GestureDetector(
+            onTap: () async {
+              if (isDisabled || widget.isDisabled) {
+                return;
+              }
+              final TItem result = await Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (ctx) => widget.onSelectorScreenCreate(),
                 ),
-                GestureDetector(
-                    onTap: () async {
-                      if (isDisabled || widget.isDisabled) {
-                        return;
-                      }
-                      final TItem result = await Navigator.of(context).push(
-                        MaterialPageRoute(
-                          builder: (ctx) => widget.onSelectorScreenCreate(),
+              );
+
+              if (result == null) {
+                return;
+              }
+
+              widget.blocField.onChanged(result);
+            },
+            child: Padding(
+              padding: const EdgeInsets.symmetric(vertical: 12.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  AnimatedOpacity(
+                    opacity: widget.blocField.value == null ? 0 : 1,
+                    duration: Duration(milliseconds: 300),
+                    child: Text(
+                      widget.title,
+                      style: TextStyle(
+                          color: Colors.black87,
+                          fontSize: 14,
+                          fontWeight: FontWeight.bold),
+                    ),
+                  ),
+                  Container(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        SizedBox(
+                          height: 12,
                         ),
-                      );
-
-                      if (result == null) {
-                        return;
-                      }
-
-                      widget.blocField.onChanged(result);
-                    },
-                    child: Container(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          SizedBox(
-                            height: 12,
-                          ),
-                          getItemWidget(isDisabled),
-                          SizedBox(
-                            height: 12,
-                          ),
-                          Container(height: 2, color: Colors.black45)
-                        ],
-                      ),
-                    ))
-              ],
+                        getItemWidget(isDisabled),
+                        SizedBox(
+                          height: 12,
+                        ),
+                        Container(height: 2, color: Colors.black45)
+                      ],
+                    ),
+                  )
+                ],
+              ),
             ),
           );
         });

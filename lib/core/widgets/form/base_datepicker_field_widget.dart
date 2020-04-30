@@ -75,9 +75,16 @@ class _BaseDatePickerFieldWidgetState extends State<BaseDatePickerFieldWidget> {
                         return;
                       }
                       final selectedDate = await showDatePicker(
+                          builder: (ctx, child) {
+                            return Theme(
+                                data: ThemeData(primarySwatch: Colors.indigo),
+                                child: child);
+                          },
+                          cancelText: "Anuluj",
+                          confirmText: "Wybierz",
                           context: context,
                           initialDate: DateTime.now(),
-                          firstDate: DateTime.now(),
+                          firstDate: DateTime.now().add(Duration(days: -30)),
                           lastDate: DateTime(2099));
 
                       widget.blocField.onChanged(selectedDate);

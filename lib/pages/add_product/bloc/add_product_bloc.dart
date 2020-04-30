@@ -4,6 +4,7 @@ import 'package:DC_Note/core/bloc/bloc_field.dart';
 import 'package:DC_Note/core/bloc/boolean_state.dart';
 import 'package:DC_Note/core/bloc/validators/not_empty_validator.dart';
 import 'package:DC_Note/core/models/app_error.dart';
+import 'package:DC_Note/core/models/product_model.dart';
 import 'package:DC_Note/core/models/selectors/category_selector_item.dart';
 import 'package:DC_Note/core/statics/application.dart';
 import 'package:DC_Note/database/app_database.dart';
@@ -14,6 +15,8 @@ import 'package:rxdart/rxdart.dart';
 part 'add_product_event.dart';
 
 class AddProductBloc extends Bloc<AddProductEvent, BooleanState> {
+  final int id;
+
   final nameField = BehaviorBlocField(
       streamModifing: (stream) => stream.transform(notEmptyValidator));
   final quantityField = BehaviorBlocField(
@@ -35,6 +38,16 @@ class AddProductBloc extends Bloc<AddProductEvent, BooleanState> {
     ),
   );
 
+  AddProductBloc(ProductModel product) : id = product?.id {
+    if (product != null) {
+      nameField.emit(product.name);
+      quantityField.emit(product.quantity.toString());
+      inUseField.emit(product.inUse);
+      useUntilField.emit(product.useUntil);
+      categoryField.emit(product.category);
+    }
+  }
+
   Stream<bool> get isFormValid =>
       Rx.combineLatest2(nameField.stream, quantityField.stream, (a, b) => true);
 
@@ -47,13 +60,24 @@ class AddProductBloc extends Bloc<AddProductEvent, BooleanState> {
   ) async* {
     yield BooleanState.processing();
     try {
-      await Application.database.productDao.insert(ProductEntity(
-          name: nameField.value,
-          quantity: double.parse(quantityField.value),
-          categoryId: categoryField.value.id,
-          useUntil: DateTime.now(),
-          id: null,
-          inUse: inUseField.value));
+      if (id != null) {
+        await Application.database.productDao.updateItem(ProductEntity(
+            name: nameField.value,
+            quantity: int.parse(quantityField.value),
+            categoryId: categoryField.value.id,
+            useUntil: useUntilField.value,
+            id: id,
+            inUse: inUseField.value ?? false));
+      } else {
+        await Application.database.productDao.insert(ProductEntity(
+            name: nameField.value,
+            quantity: int.parse(quantityField.value),
+            categoryId: categoryField.value.id,
+            useUntil: useUntilField.value,
+            id: null,
+            inUse: inUseField.value ?? false));
+      }
+
       yield BooleanState.successful();
     } catch (error) {
       yield BooleanState.error(AppError("Nie udało się zapisać produktu."));

@@ -51,6 +51,15 @@ class ProductDao extends DatabaseAccessor<AppDatabase> with _$ProductDaoMixin {
 
   Future<int> insert(ProductEntity product) async =>
       into(productTable).insert(product, orReplace: true);
+
+  Future<bool> updateItem(ProductEntity product) async =>
+      update(productTable).replace(product);
+
+  Future<int> toggleInUseProduct(bool inUse, int id) {
+    return (update(productTable)..where((t) => t.id.equals(id))).write(
+      ProductTableCompanion(inUse: Value(inUse)),
+    );
+  }
 }
 
 @UseDao(tables: [CategoryTable])

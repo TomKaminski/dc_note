@@ -1,42 +1,41 @@
-import 'package:DC_Note/core/statics/colors.dart';
 import 'package:DC_Note/pages/category_selector/category_selector_screen.dart';
-import 'package:DC_Note/pages/products/product_list_item.dart';
+import 'package:DC_Note/pages/in_use_products/bloc/in_use_products_bloc.dart';
+import 'package:DC_Note/pages/in_use_products/in_use_product_list_item.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:liquid_pull_to_refresh/liquid_pull_to_refresh.dart';
 
-import 'bloc/products_bloc.dart';
-
-class ProductsScreen extends StatefulWidget {
+class InUseProductsScreen extends StatefulWidget {
   @override
-  ProductsScreenState createState() {
-    return ProductsScreenState();
+  InUseProductsScreenState createState() {
+    return InUseProductsScreenState();
   }
 }
 
-class ProductsScreenState extends State<ProductsScreen> {
-  ProductsBloc _bloc;
+class InUseProductsScreenState extends State<InUseProductsScreen> {
+  InUseProductsBloc _bloc;
 
   @override
   void initState() {
     super.initState();
-    _bloc = BlocProvider.of<ProductsBloc>(context);
+    _bloc = BlocProvider.of<InUseProductsBloc>(context);
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        centerTitle: true,
         bottom: PreferredSize(
           preferredSize: const Size.fromHeight(48),
           child: BottomSearchBarWidget(
-            onChanged: (text) =>
-                BlocProvider.of<ProductsBloc>(context).searchStream.add(text),
+            onChanged: (text) => BlocProvider.of<InUseProductsBloc>(context)
+                .searchStream
+                .add(text),
           ),
         ),
+        centerTitle: true,
         title: Text(
-          "Wszystkie produkty",
+          "Używane produkty",
           textAlign: TextAlign.start,
           style: TextStyle(
               fontSize: 24, fontWeight: FontWeight.w300, color: Colors.white),
@@ -47,7 +46,7 @@ class ProductsScreenState extends State<ProductsScreen> {
         onPressed: () async {
           dynamic result = await Navigator.of(context).pushNamed("/addProduct");
           if (result == true) {
-            _bloc.add(LoadProductsEvent(null));
+            _bloc.add(LoadInUseProductsEvent(null));
           }
         },
         child: Icon(
@@ -55,23 +54,23 @@ class ProductsScreenState extends State<ProductsScreen> {
           color: Colors.white,
         ),
       ),
-      body: BlocConsumer<ProductsBloc, ProductsState>(
+      body: BlocConsumer<InUseProductsBloc, InUseProductsState>(
         bloc: _bloc,
         builder: (
           BuildContext context,
-          ProductsState state,
+          InUseProductsState state,
         ) {
-          if (state is ProductsError) {
+          if (state is InUseProductsError) {
             return Center(
               child: Text('Błąd pobierania produktów.'),
             );
           }
-          if (state is ProductsLoaded) {
+          if (state is InUseProductsLoaded) {
             return LiquidPullToRefresh(
               backgroundColor: Colors.white,
               springAnimationDurationInMilliseconds: 300,
               onRefresh: () async {
-                _bloc.add(LoadProductsEvent(null));
+                _bloc.add(LoadInUseProductsEvent(null));
               },
               child: ListView.builder(
                 itemBuilder: (BuildContext context, int index) {
@@ -84,7 +83,8 @@ class ProductsScreenState extends State<ProductsScreen> {
                       subtitle: Text("Dotknij + aby dodać nowy produkt."),
                     );
                   }
-                  return ProductListItemWidget(product: state.products[index]);
+                  return InUseProductListItemWidget(
+                      product: state.products[index]);
                 },
                 itemCount:
                     state.products.length == 0 ? 1 : state.products.length,
@@ -96,8 +96,8 @@ class ProductsScreenState extends State<ProductsScreen> {
             child: CircularProgressIndicator(),
           );
         },
-        listener: (BuildContext context, ProductsState state) {
-          if (state is ProductsUpdated) {
+        listener: (BuildContext context, InUseProductsState state) {
+          if (state is InUseProductsUpdated) {
             Navigator.of(context).pop();
           }
         },

@@ -2,11 +2,10 @@ import 'package:flutter/material.dart';
 
 class ModalActionItem {
   final String name;
-  final Color textColor;
+  final TextStyle style;
   final Function() onPressed;
 
-  const ModalActionItem(
-      {this.name, this.onPressed, this.textColor = Colors.black});
+  const ModalActionItem({this.name, this.onPressed, this.style});
 }
 
 class ModalActionItemWidget extends StatelessWidget {
@@ -30,7 +29,7 @@ class ModalActionItemWidget extends StatelessWidget {
               padding: const EdgeInsets.symmetric(vertical: 20.0),
               child: Text(
                 item.name,
-                style: TextStyle(color: item.textColor),
+                style: item.style ?? TextStyle(color: Colors.black),
               ),
             ),
           ),

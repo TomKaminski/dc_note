@@ -2,16 +2,16 @@ import 'dart:async';
 import 'package:DC_Note/core/models/product_model.dart';
 import 'package:DC_Note/core/statics/application.dart';
 import 'package:DC_Note/database/app_database.dart';
-import 'package:moor_flutter/moor_flutter.dart';
 import 'package:equatable/equatable.dart';
+import 'package:moor_flutter/moor_flutter.dart';
 
 import 'package:bloc/bloc.dart';
 import 'package:rxdart/rxdart.dart';
 
-part 'products_event.dart';
-part 'products_state.dart';
+part 'in_use_products_event.dart';
+part 'in_use_products_state.dart';
 
-class ProductsBloc extends Bloc<ProductsEvent, ProductsState> {
+class InUseProductsBloc extends Bloc<InUseProductsEvent, InUseProductsState> {
   final searchStream = BehaviorSubject<String>();
 
   @override
@@ -20,49 +20,40 @@ class ProductsBloc extends Bloc<ProductsEvent, ProductsState> {
     return super.close();
   }
 
-  ProductsBloc() {
+  InUseProductsBloc() {
     searchStream
         .distinct()
         .debounceTime(Duration(milliseconds: 400))
         .listen((event) {
-      add(LoadProductsEvent(event));
+      add(LoadInUseProductsEvent(event));
     });
   }
 
   @override
-  ProductsState get initialState => ProductsUninitialized();
+  InUseProductsState get initialState => InUseProductsUninitialized();
 
   @override
-  Stream<ProductsState> mapEventToState(
-    ProductsEvent event,
+  Stream<InUseProductsState> mapEventToState(
+    InUseProductsEvent event,
   ) async* {
-    if (event is LoadProductsEvent) {
+    if (event is LoadInUseProductsEvent) {
       try {
         final products =
             (await fetchProducts(event.searchPhrase ?? searchStream.value))
                 .toList();
-        yield ProductsLoaded(products: products);
+        yield InUseProductsLoaded(products: products.toList());
       } catch (error) {
-        yield ProductsError();
+        yield InUseProductsError();
       }
-    } else if (event is DeleteProductEvent) {
-      try {
-        await Application.database.productDao.deleteById(event.id);
-        yield ProductsUpdated();
-        final products = (await fetchProducts(searchStream.value)).toList();
-        yield ProductsLoaded(products: products.toList());
-      } catch (error) {
-        yield ProductsError();
-      }
-    } else if (event is ToggleInUseProductsEvent) {
+    } else if (event is RemoveFromInUseProductsEvent) {
       try {
         await Application.database.productDao
-            .toggleInUseProduct(event.inUse, event.id);
-        yield ProductsUpdated();
+            .toggleInUseProduct(false, event.id);
+        yield InUseProductsUpdated();
         final products = (await fetchProducts(searchStream.value)).toList();
-        yield ProductsLoaded(products: products.toList());
+        yield InUseProductsLoaded(products: products.toList());
       } catch (error) {
-        yield ProductsError();
+        yield InUseProductsError();
       }
     }
   }
@@ -70,10 +61,11 @@ class ProductsBloc extends Bloc<ProductsEvent, ProductsState> {
   Future<Iterable<ProductModel>> fetchProducts(String searchPhrase) async {
     List<ProductEntity> entities;
     if (searchPhrase?.isNotEmpty == true) {
-      entities = await Application.database.productDao
-          .getAllByExpression((tbl) => tbl.name.like("%$searchPhrase%"));
+      entities = await Application.database.productDao.getAllByExpression(
+          (tbl) => tbl.name.like("%$searchPhrase%") & tbl.inUse.equals(true));
     } else {
-      entities = await Application.database.productDao.getAll();
+      entities = await Application.database.productDao
+          .getAllByExpression((tbl) => tbl.inUse.equals(true));
     }
 
     final existingCategories = entities.map((e) => e.categoryId).toSet();

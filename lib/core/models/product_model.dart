@@ -1,3 +1,5 @@
+import 'package:DC_Note/core/models/selectors/category_selector_item.dart';
+import 'package:DC_Note/core/statics/categories_provider.dart';
 import 'package:DC_Note/database/app_database.dart';
 
 import 'base_app_model.dart';
@@ -5,20 +7,23 @@ import 'base_app_model.dart';
 class ProductModel extends BaseAppModel {
   final int id;
   final bool inUse;
-  final double quantity;
-  final int categoryId;
+  final int quantity;
   final DateTime useUntil;
   final String name;
-  final String categoryName;
+  final CategorySelectorItem category;
 
-  ProductModel(this.id, this.quantity, this.categoryId, this.useUntil,
-      this.name, this.inUse, this.categoryName);
+  ProductModel(this.id, this.quantity, this.useUntil, this.name, this.inUse,
+      this.category);
 
-  ProductModel.fromEntity(ProductEntity entity, this.categoryName)
+  ProductModel.fromEntity(ProductEntity entity, CategoryEntity category)
       : id = entity.id,
         name = entity.name,
         quantity = entity.quantity,
-        categoryId = entity.categoryId,
+        category = CategorySelectorItem(
+            category.name,
+            entity.categoryId,
+            category.parentId,
+            CategoryKeyEnumExtension.fromString(category.key)),
         inUse = entity.inUse,
         useUntil = entity.useUntil;
 
@@ -28,11 +33,11 @@ class ProductModel extends BaseAppModel {
         id: id,
         name: name,
         quantity: quantity,
-        categoryId: categoryId,
+        categoryId: category.id,
         useUntil: useUntil,
         inUse: inUse);
   }
 
   @override
-  List<Object> get props => [id, name, quantity, categoryId, useUntil, inUse];
+  List<Object> get props => [id, name, quantity, useUntil, inUse];
 }

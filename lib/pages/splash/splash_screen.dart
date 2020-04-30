@@ -1,8 +1,27 @@
+import 'package:DC_Note/core/statics/colors.dart';
 import 'package:DC_Note/pages/splash/bloc/splash_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class SplashScreen extends StatelessWidget {
+class SplashScreen extends StatefulWidget {
+  @override
+  _SplashScreenState createState() => _SplashScreenState();
+}
+
+class _SplashScreenState extends State<SplashScreen> {
+  bool loaded = false;
+
+  @override
+  void initState() {
+    super.initState();
+
+    Future.delayed(Duration(milliseconds: 200)).then((value) {
+      setState(() {
+        loaded = true;
+      });
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
@@ -18,8 +37,67 @@ class SplashScreen extends StatelessWidget {
             },
             child: Scaffold(
                 body: Center(
-              child: CircularProgressIndicator(
-                strokeWidth: 1,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                mainAxisSize: MainAxisSize.max,
+                children: [
+                  CircularProgressIndicator(
+                    strokeWidth: 2,
+                  ),
+                  SizedBox(height: 8),
+                  Text(
+                    "Ładowanie",
+                    style: TextStyle(fontSize: 16),
+                  ),
+                  SizedBox(height: 8),
+                  Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+                    ImageIcon(
+                      AssetImage("assets/images/body.png"),
+                      color: AppColors.main,
+                      size: 28,
+                    ),
+                    SizedBox(width: 6),
+                    AnimatedOpacity(
+                      duration: Duration(milliseconds: 500),
+                      opacity: loaded ? 1 : 0,
+                      child: ImageIcon(
+                        AssetImage("assets/images/comb.png"),
+                        color: AppColors.main,
+                        size: 28,
+                      ),
+                    ),
+                    SizedBox(width: 6),
+                    AnimatedOpacity(
+                      duration: Duration(milliseconds: 1000),
+                      opacity: loaded ? 1 : 0,
+                      child: ImageIcon(
+                        AssetImage("assets/images/face-mask.png"),
+                        color: AppColors.main,
+                        size: 28,
+                      ),
+                    ),
+                    SizedBox(width: 6),
+                    AnimatedOpacity(
+                      duration: Duration(milliseconds: 1500),
+                      opacity: loaded ? 1 : 0,
+                      child: ImageIcon(
+                        AssetImage("assets/images/nail-polish.png"),
+                        color: AppColors.main,
+                        size: 28,
+                      ),
+                    ),
+                    SizedBox(width: 6),
+                    AnimatedOpacity(
+                      duration: Duration(milliseconds: 2000),
+                      opacity: loaded ? 1 : 0,
+                      child: ImageIcon(
+                        AssetImage("assets/images/make-up.png"),
+                        color: AppColors.main,
+                        size: 28,
+                      ),
+                    ),
+                  ]),
+                ],
               ),
             )),
           );

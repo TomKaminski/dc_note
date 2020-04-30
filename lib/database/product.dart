@@ -4,12 +4,10 @@ import 'package:moor_flutter/moor_flutter.dart';
 class ProductTable extends Table {
   IntColumn get id => integer().autoIncrement()();
   TextColumn get name => text()();
-  // RealColumn get amountPerItem => real()();
-  // TextColumn get amountSuffixKey => text()(); //ml/g/kg etc.
   BoolColumn get inUse => boolean()();
-  RealColumn get quantity => real()();
+  IntColumn get quantity => integer()();
   IntColumn get categoryId => integer()();
-  DateTimeColumn get useUntil => dateTime()();
+  DateTimeColumn get useUntil => dateTime().nullable()();
 
   @override
   Set<Column> get primaryKey => {id};

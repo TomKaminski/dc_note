@@ -3,15 +3,16 @@ import 'package:DC_Note/core/statics/colors.dart';
 import 'package:DC_Note/core/widgets/modal/modal_action_widget.dart';
 import 'package:DC_Note/core/widgets/modal/modal_with_actions_widget.dart';
 import 'package:DC_Note/pages/add_product/add_product_screen.dart';
+import 'package:DC_Note/pages/in_use_products/bloc/in_use_products_bloc.dart';
 import 'package:DC_Note/pages/products/bloc/products_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 
-class ProductListItemWidget extends StatelessWidget {
+class InUseProductListItemWidget extends StatelessWidget {
   final ProductModel product;
 
-  const ProductListItemWidget({Key key, @required this.product})
+  const InUseProductListItemWidget({Key key, @required this.product})
       : super(key: key);
 
   @override
@@ -33,7 +34,7 @@ class ProductListItemWidget extends StatelessWidget {
             }
           },
           onLongPress: () {
-            final productBloc = BlocProvider.of<ProductsBloc>(context);
+            final productBloc = BlocProvider.of<InUseProductsBloc>(context);
             showDialog(
               context: context,
               builder: (context) {
@@ -137,20 +138,14 @@ class ProductListItemWidget extends StatelessWidget {
   }
 
   List<ModalActionItem> buildModalActions(
-      BuildContext context, ProductsBloc productBloc) {
+      BuildContext context, InUseProductsBloc productBloc) {
     final List<ModalActionItem> items = [];
 
-    if (!product.inUse) {
-      items.add(ModalActionItem(
-          name: "Oznacz jako uzywane",
-          onPressed: () {
-            productBloc.add(ToggleInUseProductsEvent(product.id, true));
-          }));
-    } else {
+    if (product.inUse) {
       items.add(ModalActionItem(
           name: "Oznacz jako nieużywane",
           onPressed: () {
-            productBloc.add(ToggleInUseProductsEvent(product.id, false));
+            productBloc.add(RemoveFromInUseProductsEvent(product.id));
           }));
     }
 
@@ -163,14 +158,8 @@ class ProductListItemWidget extends StatelessWidget {
                 builder: (ctx) => AddProductScreen(editModel: product)));
 
             if (result == true) {
-              productBloc.add(LoadProductsEvent(null));
+              productBloc.add(LoadInUseProductsEvent(null));
             }
-          }),
-      ModalActionItem(
-          name: "Usuń produkt",
-          style: TextStyle(color: Colors.red),
-          onPressed: () {
-            productBloc.add(DeleteProductEvent(product.id));
           }),
     ]);
     return items;

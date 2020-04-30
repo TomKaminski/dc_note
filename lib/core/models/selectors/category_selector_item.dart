@@ -10,5 +10,7 @@ class CategorySelectorItem extends BaseSelectorItem {
       : super(title, id);
 
   @override
-  AssetImage get icon => AssetImage("assets/images/${category.imageName}");
+  AssetImage get icon => category.imageName != null
+      ? AssetImage("assets/images/${category.imageName}")
+      : null;
 }
