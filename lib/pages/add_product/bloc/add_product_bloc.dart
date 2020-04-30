@@ -22,6 +22,7 @@ class AddProductBloc extends Bloc<AddProductEvent, BooleanState> {
   final quantityField = BehaviorBlocField(
       streamModifing: (stream) => stream.transform(notEmptyValidator));
 
+  final notesField = BehaviorBlocField<String>();
   final inUseField = BehaviorBlocField<bool>();
   final useUntilField = BehaviorBlocField<DateTime>();
 
@@ -43,6 +44,7 @@ class AddProductBloc extends Bloc<AddProductEvent, BooleanState> {
       nameField.emit(product.name);
       quantityField.emit(product.quantity.toString());
       inUseField.emit(product.inUse);
+      notesField.emit(product.notes);
       useUntilField.emit(product.useUntil);
       categoryField.emit(product.category);
     }
@@ -66,6 +68,7 @@ class AddProductBloc extends Bloc<AddProductEvent, BooleanState> {
             quantity: int.parse(quantityField.value),
             categoryId: categoryField.value.id,
             useUntil: useUntilField.value,
+            notes: notesField.value,
             id: id,
             inUse: inUseField.value ?? false));
       } else {
@@ -74,6 +77,7 @@ class AddProductBloc extends Bloc<AddProductEvent, BooleanState> {
             quantity: int.parse(quantityField.value),
             categoryId: categoryField.value.id,
             useUntil: useUntilField.value,
+            notes: notesField.value,
             id: null,
             inUse: inUseField.value ?? false));
       }

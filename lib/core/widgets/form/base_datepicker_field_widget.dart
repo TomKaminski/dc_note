@@ -2,6 +2,7 @@ import 'package:DC_Note/core/bloc/bloc_field.dart';
 import 'package:DC_Note/core/bloc/validators/not_empty_validator.dart';
 import 'package:DC_Note/core/statics/colors.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 class BaseDatePickerFieldWidget extends StatefulWidget {
   final DateTime initialData;
@@ -96,9 +97,7 @@ class _BaseDatePickerFieldWidgetState extends State<BaseDatePickerFieldWidget> {
                           SizedBox(
                             height: 12,
                           ),
-                          Text(
-                              widget.blocField.value?.toString() ??
-                                  widget.title,
+                          Text(_getTextValue(),
                               style: TextStyle(
                                   fontSize: 15,
                                   fontWeight: FontWeight.bold,
@@ -119,5 +118,13 @@ class _BaseDatePickerFieldWidgetState extends State<BaseDatePickerFieldWidget> {
             ),
           );
         });
+  }
+
+  String _getTextValue() {
+    if (widget.blocField.value != null) {
+      return DateFormat.yMMMMd("PL").format(widget.blocField.value);
+    } else {
+      return widget.title;
+    }
   }
 }

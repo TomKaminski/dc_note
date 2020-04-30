@@ -8,6 +8,7 @@ class ProductTable extends Table {
   IntColumn get quantity => integer()();
   IntColumn get categoryId => integer()();
   DateTimeColumn get useUntil => dateTime().nullable()();
+  TextColumn get notes => text().nullable()();
 
   @override
   Set<Column> get primaryKey => {id};

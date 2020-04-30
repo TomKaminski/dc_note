@@ -83,6 +83,8 @@ class _BaseTextFieldWidgetState extends State<BaseTextFieldWidget> {
                   ),
                 ),
                 TextField(
+                    minLines: 1,
+                    maxLines: 6,
                     enabled: !isDisabled && !widget.isDisabled,
                     controller: _controller,
                     onChanged: widget.blocField.onChanged,

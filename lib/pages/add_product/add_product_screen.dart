@@ -66,7 +66,7 @@ class AddProductScreenState extends State<AddProductScreen> {
                     Padding(
                       padding: const EdgeInsets.symmetric(vertical: 12.0),
                       child: Text(
-                        'Dodaj produkt wypełniając odpowiednie pola. Data ważności oraz pole "Aktualnie używam" są opcjonalne. W każdej chwili możesz je zmienić w widoku edycji produktu.',
+                        'Dodaj produkt wypełniając odpowiednie pola. Data ważności, notatki oraz pole "Aktualnie używam" są opcjonalne. W każdej chwili możesz je zmienić w widoku edycji produktu.',
                         style: TextStyle(
                             color: AppColors.main,
                             fontWeight: FontWeight.w600,
@@ -80,6 +80,12 @@ class AddProductScreenState extends State<AddProductScreen> {
                         isDisabled: currentState.isProcessing,
                         initialData: bloc.nameField.value,
                         isRequired: true),
+                    BaseTextFieldWidget(
+                        blocField: bloc.notesField,
+                        title: "Notatki",
+                        isDisabled: currentState.isProcessing,
+                        initialData: bloc.notesField.value,
+                        isRequired: false),
                     BaseTextFieldWidget(
                         blocField: bloc.quantityField,
                         title: "Ilość",
@@ -98,7 +104,7 @@ class AddProductScreenState extends State<AddProductScreen> {
                       ),
                     ),
                     BaseDatePickerFieldWidget(
-                        title: "Data waznosci",
+                        title: "Data ważnosci",
                         isDisabled: currentState.isProcessing,
                         blocField: bloc.useUntilField,
                         initialData: bloc.useUntilField.value,

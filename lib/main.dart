@@ -31,7 +31,7 @@ class AppComponentState extends State<AppComponent> {
         GlobalWidgetsLocalizations.delegate,
         S.delegate
       ],
-      supportedLocales: S.delegate.supportedLocales,
+      supportedLocales: [const Locale("pl", "PL")],
       theme: ThemeData(
         fontFamily: "Montserrat",
         accentColor: AppColors.main,

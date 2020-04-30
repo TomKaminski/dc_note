@@ -14,13 +14,15 @@ class ProductEntity extends DataClass implements Insertable<ProductEntity> {
   final int quantity;
   final int categoryId;
   final DateTime useUntil;
+  final String notes;
   ProductEntity(
       {@required this.id,
       @required this.name,
       @required this.inUse,
       @required this.quantity,
       @required this.categoryId,
-      this.useUntil});
+      this.useUntil,
+      this.notes});
   factory ProductEntity.fromData(
       Map<String, dynamic> data, GeneratedDatabase db,
       {String prefix}) {
@@ -39,6 +41,8 @@ class ProductEntity extends DataClass implements Insertable<ProductEntity> {
           .mapFromDatabaseResponse(data['${effectivePrefix}category_id']),
       useUntil: dateTimeType
           .mapFromDatabaseResponse(data['${effectivePrefix}use_until']),
+      notes:
+          stringType.mapFromDatabaseResponse(data['${effectivePrefix}notes']),
     );
   }
   factory ProductEntity.fromJson(Map<String, dynamic> json,
@@ -51,6 +55,7 @@ class ProductEntity extends DataClass implements Insertable<ProductEntity> {
       quantity: serializer.fromJson<int>(json['quantity']),
       categoryId: serializer.fromJson<int>(json['categoryId']),
       useUntil: serializer.fromJson<DateTime>(json['useUntil']),
+      notes: serializer.fromJson<String>(json['notes']),
     );
   }
   @override
@@ -63,6 +68,7 @@ class ProductEntity extends DataClass implements Insertable<ProductEntity> {
       'quantity': serializer.toJson<int>(quantity),
       'categoryId': serializer.toJson<int>(categoryId),
       'useUntil': serializer.toJson<DateTime>(useUntil),
+      'notes': serializer.toJson<String>(notes),
     };
   }
 
@@ -82,6 +88,8 @@ class ProductEntity extends DataClass implements Insertable<ProductEntity> {
       useUntil: useUntil == null && nullToAbsent
           ? const Value.absent()
           : Value(useUntil),
+      notes:
+          notes == null && nullToAbsent ? const Value.absent() : Value(notes),
     );
   }
 
@@ -91,7 +99,8 @@ class ProductEntity extends DataClass implements Insertable<ProductEntity> {
           bool inUse,
           int quantity,
           int categoryId,
-          DateTime useUntil}) =>
+          DateTime useUntil,
+          String notes}) =>
       ProductEntity(
         id: id ?? this.id,
         name: name ?? this.name,
@@ -99,6 +108,7 @@ class ProductEntity extends DataClass implements Insertable<ProductEntity> {
         quantity: quantity ?? this.quantity,
         categoryId: categoryId ?? this.categoryId,
         useUntil: useUntil ?? this.useUntil,
+        notes: notes ?? this.notes,
       );
   @override
   String toString() {
@@ -108,7 +118,8 @@ class ProductEntity extends DataClass implements Insertable<ProductEntity> {
           ..write('inUse: $inUse, ')
           ..write('quantity: $quantity, ')
           ..write('categoryId: $categoryId, ')
-          ..write('useUntil: $useUntil')
+          ..write('useUntil: $useUntil, ')
+          ..write('notes: $notes')
           ..write(')'))
         .toString();
   }
@@ -120,8 +131,10 @@ class ProductEntity extends DataClass implements Insertable<ProductEntity> {
           name.hashCode,
           $mrjc(
               inUse.hashCode,
-              $mrjc(quantity.hashCode,
-                  $mrjc(categoryId.hashCode, useUntil.hashCode))))));
+              $mrjc(
+                  quantity.hashCode,
+                  $mrjc(categoryId.hashCode,
+                      $mrjc(useUntil.hashCode, notes.hashCode)))))));
   @override
   bool operator ==(dynamic other) =>
       identical(this, other) ||
@@ -131,7 +144,8 @@ class ProductEntity extends DataClass implements Insertable<ProductEntity> {
           other.inUse == this.inUse &&
           other.quantity == this.quantity &&
           other.categoryId == this.categoryId &&
-          other.useUntil == this.useUntil);
+          other.useUntil == this.useUntil &&
+          other.notes == this.notes);
 }
 
 class ProductTableCompanion extends UpdateCompanion<ProductEntity> {
@@ -141,6 +155,7 @@ class ProductTableCompanion extends UpdateCompanion<ProductEntity> {
   final Value<int> quantity;
   final Value<int> categoryId;
   final Value<DateTime> useUntil;
+  final Value<String> notes;
   const ProductTableCompanion({
     this.id = const Value.absent(),
     this.name = const Value.absent(),
@@ -148,6 +163,7 @@ class ProductTableCompanion extends UpdateCompanion<ProductEntity> {
     this.quantity = const Value.absent(),
     this.categoryId = const Value.absent(),
     this.useUntil = const Value.absent(),
+    this.notes = const Value.absent(),
   });
   ProductTableCompanion.insert({
     this.id = const Value.absent(),
@@ -156,6 +172,7 @@ class ProductTableCompanion extends UpdateCompanion<ProductEntity> {
     @required int quantity,
     @required int categoryId,
     this.useUntil = const Value.absent(),
+    this.notes = const Value.absent(),
   })  : name = Value(name),
         inUse = Value(inUse),
         quantity = Value(quantity),
@@ -166,7 +183,8 @@ class ProductTableCompanion extends UpdateCompanion<ProductEntity> {
       Value<bool> inUse,
       Value<int> quantity,
       Value<int> categoryId,
-      Value<DateTime> useUntil}) {
+      Value<DateTime> useUntil,
+      Value<String> notes}) {
     return ProductTableCompanion(
       id: id ?? this.id,
       name: name ?? this.name,
@@ -174,6 +192,7 @@ class ProductTableCompanion extends UpdateCompanion<ProductEntity> {
       quantity: quantity ?? this.quantity,
       categoryId: categoryId ?? this.categoryId,
       useUntil: useUntil ?? this.useUntil,
+      notes: notes ?? this.notes,
     );
   }
 }
@@ -252,9 +271,21 @@ class $ProductTableTable extends ProductTable
     );
   }
 
+  final VerificationMeta _notesMeta = const VerificationMeta('notes');
+  GeneratedTextColumn _notes;
+  @override
+  GeneratedTextColumn get notes => _notes ??= _constructNotes();
+  GeneratedTextColumn _constructNotes() {
+    return GeneratedTextColumn(
+      'notes',
+      $tableName,
+      true,
+    );
+  }
+
   @override
   List<GeneratedColumn> get $columns =>
-      [id, name, inUse, quantity, categoryId, useUntil];
+      [id, name, inUse, quantity, categoryId, useUntil, notes];
   @override
   $ProductTableTable get asDslTable => this;
   @override
@@ -296,6 +327,10 @@ class $ProductTableTable extends ProductTable
       context.handle(_useUntilMeta,
           useUntil.isAcceptableValue(d.useUntil.value, _useUntilMeta));
     }
+    if (d.notes.present) {
+      context.handle(
+          _notesMeta, notes.isAcceptableValue(d.notes.value, _notesMeta));
+    }
     return context;
   }
 
@@ -327,6 +362,9 @@ class $ProductTableTable extends ProductTable
     }
     if (d.useUntil.present) {
       map['use_until'] = Variable<DateTime, DateTimeType>(d.useUntil.value);
+    }
+    if (d.notes.present) {
+      map['notes'] = Variable<String, StringType>(d.notes.value);
     }
     return map;
   }

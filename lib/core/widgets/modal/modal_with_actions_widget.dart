@@ -15,22 +15,22 @@ class ModalActionItemWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      width: double.infinity,
-      child: Material(
-        color: Colors.transparent,
-        child: InkWell(
-          borderRadius: BorderRadius.all(
-            Radius.circular(12),
-          ),
-          onTap: item.onPressed,
-          child: Center(
-            child: Padding(
-              padding: const EdgeInsets.symmetric(vertical: 20.0),
-              child: Text(
-                item.name,
-                style: item.style ?? TextStyle(color: Colors.black),
-              ),
+    return Material(
+      color: Colors.white,
+      borderRadius: BorderRadius.all(
+        Radius.circular(24),
+      ),
+      child: InkWell(
+        borderRadius: BorderRadius.all(
+          Radius.circular(24),
+        ),
+        onTap: item.onPressed,
+        child: Center(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(vertical: 16.0),
+            child: Text(
+              item.name,
+              style: item.style ?? TextStyle(color: Colors.black),
             ),
           ),
         ),

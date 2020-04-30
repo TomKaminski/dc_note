@@ -4,6 +4,7 @@ import 'package:DC_Note/core/widgets/modal/modal_action_widget.dart';
 import 'package:DC_Note/core/widgets/modal/modal_with_actions_widget.dart';
 import 'package:DC_Note/pages/add_product/add_product_screen.dart';
 import 'package:DC_Note/pages/products/bloc/products_bloc.dart';
+import 'package:DC_Note/pages/products/product_detail_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
@@ -24,24 +25,13 @@ class ProductListItemWidget extends StatelessWidget {
         child: ListTile(
           contentPadding: EdgeInsets.zero,
           onTap: () async {
-            final result = await Navigator.of(context).push(MaterialPageRoute(
-                builder: (ctx) => AddProductScreen(editModel: product)));
-
-            if (result == true) {
-              BlocProvider.of<ProductsBloc>(context)
-                  .add(LoadProductsEvent(null));
-            }
-          },
-          onLongPress: () {
             final productBloc = BlocProvider.of<ProductsBloc>(context);
             showDialog(
               context: context,
               builder: (context) {
-                return ModalActionWidget(
-                  title: "Wybierz akcję",
-                  description: null,
-                  actions: buildModalActions(context, productBloc),
-                );
+                return ProductDetailDialog(
+                    product: product,
+                    actions: buildModalActions(context, productBloc));
               },
             );
           },
@@ -100,7 +90,7 @@ class ProductListItemWidget extends StatelessWidget {
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.all(8.0),
+                padding: const EdgeInsets.fromLTRB(8, 8, 8, 4),
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -116,7 +106,7 @@ class ProductListItemWidget extends StatelessWidget {
                         ),
                         Text(
                           product.useUntil != null
-                              ? "Ważne do ${DateFormat.yMMMMd().format(product.useUntil)}"
+                              ? 'Ważne do ${DateFormat.yMMMMd("PL").format(product.useUntil)}'
                               : "Brak daty ważności",
                           style: TextStyle(
                               fontSize: 14,
@@ -180,7 +170,7 @@ class ProductListItemWidget extends StatelessWidget {
     if (product.inUse) {
       return [
         Icon(
-          Icons.label_important,
+          Icons.stars,
           color: Colors.white,
         ),
         SizedBox(

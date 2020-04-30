@@ -1,4 +1,3 @@
-import 'package:DC_Note/core/statics/colors.dart';
 import 'package:DC_Note/pages/category_selector/category_selector_screen.dart';
 import 'package:DC_Note/pages/products/product_list_item.dart';
 import 'package:flutter/material.dart';
