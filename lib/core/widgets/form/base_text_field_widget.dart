@@ -12,6 +12,7 @@ class BaseTextFieldWidget extends StatefulWidget {
   final String title;
   final bool isRequired;
   final Widget suffix;
+  final bool multiLine;
   final bool onlyNumbers;
   final bool obscureText;
 
@@ -31,7 +32,8 @@ class BaseTextFieldWidget extends StatefulWidget {
       this.obscureText = false,
       this.prefixImage,
       this.disabledStream,
-      this.isDisabled = false})
+      this.isDisabled = false,
+      this.multiLine = false})
       : super(key: key);
 
   @override
@@ -84,12 +86,13 @@ class _BaseTextFieldWidgetState extends State<BaseTextFieldWidget> {
                 ),
                 TextField(
                     minLines: 1,
-                    maxLines: 6,
+                    maxLines: 8,
                     enabled: !isDisabled && !widget.isDisabled,
                     controller: _controller,
                     onChanged: widget.blocField.onChanged,
                     style: TextStyle(
                         fontSize: 15,
+                        height: 1.3,
                         fontWeight: FontWeight.bold,
                         letterSpacing: 1,
                         color: (isDisabled || widget.isDisabled)
@@ -100,7 +103,9 @@ class _BaseTextFieldWidgetState extends State<BaseTextFieldWidget> {
                     keyboardType: widget.onlyNumbers
                         ? TextInputType.numberWithOptions(
                             decimal: widget.allowFloatingPoint)
-                        : TextInputType.text,
+                        : widget.multiLine
+                            ? TextInputType.multiline
+                            : TextInputType.text,
                     inputFormatters: widget.onlyNumbers
                         ? widget.allowFloatingPoint
                             ? [
@@ -118,7 +123,7 @@ class _BaseTextFieldWidgetState extends State<BaseTextFieldWidget> {
                             borderSide:
                                 BorderSide(width: 2, color: Colors.black45)),
                         filled: true,
-                        fillColor: Colors.white,
+                        fillColor: Theme.of(context).scaffoldBackgroundColor,
                         contentPadding: EdgeInsets.all(0),
                         suffix: Padding(
                           padding: const EdgeInsets.only(left: 4),

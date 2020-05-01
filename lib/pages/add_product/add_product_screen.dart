@@ -81,6 +81,7 @@ class AddProductScreenState extends State<AddProductScreen> {
                     BaseTextFieldWidget(
                         blocField: bloc.notesField,
                         title: "Notatki",
+                        multiLine: true,
                         isDisabled: currentState.isProcessing,
                         initialData: bloc.notesField.value,
                         isRequired: false),
