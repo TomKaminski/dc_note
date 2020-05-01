@@ -34,18 +34,13 @@ class AppComponentState extends State<AppComponent> {
       supportedLocales: [const Locale("pl", "PL")],
       theme: ThemeData(
         fontFamily: "Montserrat",
-        accentColor: AppColors.main,
-        canvasColor: AppColors.main,
-        primaryColor: AppColors.main,
+        accentColor: AppColors.secondary,
+        primaryColor: AppColors.primary,
         snackBarTheme: SnackBarThemeData(
-            backgroundColor: AppColors.main,
+            backgroundColor: AppColors.primary,
             contentTextStyle:
                 TextStyle(fontWeight: FontWeight.bold, height: 1.5)),
-        primaryColorLight: AppColors.main,
-        scaffoldBackgroundColor: Colors.white,
-        appBarTheme: AppBarTheme(
-            color: AppColors.main,
-            iconTheme: IconThemeData(color: Colors.white)),
+        primaryColorLight: AppColors.primaryLight,
       ),
       initialRoute: "/",
       routes: {

@@ -1,3 +1,4 @@
+import 'package:DC_Note/core/statics/colors.dart';
 import 'package:DC_Note/pages/category_selector/category_selector_screen.dart';
 import 'package:DC_Note/pages/products/product_list_item.dart';
 import 'package:flutter/material.dart';
@@ -26,7 +27,6 @@ class ProductsScreenState extends State<ProductsScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        centerTitle: true,
         bottom: PreferredSize(
           preferredSize: const Size.fromHeight(48),
           child: BottomSearchBarWidget(
@@ -36,9 +36,7 @@ class ProductsScreenState extends State<ProductsScreen> {
         ),
         title: Text(
           "Wszystkie produkty",
-          textAlign: TextAlign.start,
-          style: TextStyle(
-              fontSize: 24, fontWeight: FontWeight.w300, color: Colors.white),
+          style: TextStyle(fontSize: 20, fontWeight: FontWeight.w500),
         ),
       ),
       floatingActionButton: FloatingActionButton(
@@ -68,26 +66,48 @@ class ProductsScreenState extends State<ProductsScreen> {
           if (state is ProductsLoaded) {
             return LiquidPullToRefresh(
               backgroundColor: Colors.white,
+              color: AppColors.primary,
               springAnimationDurationInMilliseconds: 300,
               onRefresh: () async {
                 _bloc.add(LoadProductsEvent(null));
               },
               child: ListView.builder(
-                itemBuilder: (BuildContext context, int index) {
-                  if (state.products.length == 0) {
-                    return ListTile(
-                      title: Text(
-                        "Brak produktów",
-                        style: TextStyle(fontSize: 18),
+                  itemBuilder: (BuildContext context, int index) {
+                    final category = state.categories[index];
+                    return ExpansionTile(
+                      title: Row(
+                        children: [
+                          ImageIcon(
+                            category.entry.icon,
+                            size: 30,
+                            color: AppColors.secondary,
+                          ),
+                          SizedBox(width: 8),
+                          Text(
+                            category.entry.title,
+                            style: TextStyle(
+                                fontSize: 18, fontWeight: FontWeight.bold),
+                          ),
+                        ],
                       ),
-                      subtitle: Text("Dotknij + aby dodać nowy produkt."),
+                      children: category.children.length != 0
+                          ? category.children
+                              .map((product) =>
+                                  ProductListItemWidget(product: product))
+                              .toList()
+                          : [
+                              ListTile(
+                                title: Text(
+                                  "Brak produktów dla tej kategorii",
+                                  style: TextStyle(fontSize: 18),
+                                ),
+                                subtitle:
+                                    Text("Dotknij + aby dodać nowy produkt."),
+                              )
+                            ],
                     );
-                  }
-                  return ProductListItemWidget(product: state.products[index]);
-                },
-                itemCount:
-                    state.products.length == 0 ? 1 : state.products.length,
-              ),
+                  },
+                  itemCount: state.categories.length),
             );
           }
 

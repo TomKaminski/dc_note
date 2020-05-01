@@ -68,7 +68,7 @@ class _BaseCheckboxFieldWidgetState extends State<BaseCheckboxFieldWidget> {
                     widget.title,
                     style: TextStyle(
                         color: (widget.blocField.value ?? false)
-                            ? AppColors.main
+                            ? AppColors.secondary
                             : Colors.black87,
                         fontSize: 14,
                         fontWeight: FontWeight.bold),

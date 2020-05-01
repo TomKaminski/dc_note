@@ -23,7 +23,6 @@ class SelectorList<TItem extends BaseSelectorItem,
                 itemBuilder: (ctx, i) {
                   final element = state.items[i];
                   return InkWell(
-                    highlightColor: AppColors.softMain,
                     onTap: () {
                       Navigator.of(context).pop(element);
                     },

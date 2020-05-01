@@ -28,11 +28,8 @@ class ProductDetailDialog extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.all(14.0),
                 child: Text(
-                  product.name,
-                  style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold),
+                  "${product.quantity.toString()}x ${product.name}",
+                  style: TextStyle(color: Colors.black, fontSize: 20),
                 ),
               ),
               Container(
@@ -42,33 +39,22 @@ class ProductDetailDialog extends StatelessWidget {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Row(children: [
-                              Icon(
-                                Icons.apps,
-                                color: AppColors.main,
-                                size: 30,
-                              ),
-                              SizedBox(
-                                width: 4,
-                              ),
-                              Text("Ilość: ${product.quantity.toString()}",
-                                  style: TextStyle(
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.normal,
-                                      letterSpacing: 1,
-                                      color: Colors.black87)),
-                            ]),
-                            Row(children: buildInUseIndicator()),
-                          ],
+                        Visibility(
+                          visible: product.inUse,
+                          child: TitleWithValue(
+                            icon: ImageIcon(
+                                AssetImage("assets/images/star.png"),
+                                color: AppColors.secondary,
+                                size: 28),
+                            title: "w użyciu",
+                            value: null,
+                          ),
                         ),
                         TitleWithValue(
                           icon: ImageIcon(
                             product.category.icon,
                             size: 30,
-                            color: AppColors.main,
+                            color: AppColors.secondary,
                           ),
                           title: "Kategoria",
                           value: product.category.title,
@@ -76,7 +62,7 @@ class ProductDetailDialog extends StatelessWidget {
                         TitleWithValue(
                           icon: Icon(
                             Icons.access_time,
-                            color: AppColors.main,
+                            color: AppColors.secondary,
                             size: 30,
                           ),
                           title: "Data ważności",
@@ -87,24 +73,30 @@ class ProductDetailDialog extends StatelessWidget {
                         TitleWithValue(
                           icon: Icon(
                             Icons.event_note,
-                            color: AppColors.main,
+                            color: AppColors.secondary,
                             size: 30,
                           ),
                           title: "Notatki",
                           value: product.notes ?? "Brak notatek",
                         ),
+                        Divider()
                       ],
                     ),
                   )),
               ...actions
-                  .map((e) => Padding(
-                        padding: const EdgeInsets.symmetric(
-                            vertical: 8, horizontal: 24),
-                        child: ModalActionItemWidget(
-                          item: e,
+                  .map((e) => Container(
+                        color: Colors.white,
+                        child: Padding(
+                          padding: const EdgeInsets.fromLTRB(24, 0, 24, 16),
+                          child: ModalActionItemWidget(
+                            item: e,
+                          ),
                         ),
                       ))
                   .toList(),
+              SizedBox(
+                height: 36,
+              )
             ],
           ),
         ),
@@ -115,26 +107,6 @@ class ProductDetailDialog extends StatelessWidget {
         ),
       ),
     );
-  }
-
-  List<Widget> buildInUseIndicator() {
-    if (product.inUse) {
-      return [
-        Icon(Icons.stars, color: AppColors.main, size: 30),
-        SizedBox(
-          width: 4,
-        ),
-        Text(
-          "w użyciu",
-          style: TextStyle(
-            fontWeight: FontWeight.bold,
-            fontSize: 14,
-            color: Colors.black87,
-          ),
-        ),
-      ];
-    }
-    return [];
   }
 }
 
@@ -152,34 +124,38 @@ class TitleWithValue extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Divider(),
-        Row(
-          children: [
-            icon,
-            SizedBox(
-              width: 4,
+    List<Widget> items = [
+      Divider(),
+      SizedBox(height: 2),
+      Row(
+        children: [
+          icon,
+          SizedBox(width: 4),
+          Text(
+            title,
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+              fontSize: 14,
+              color: Colors.black87,
             ),
-            Text(
-              title,
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: 14,
-                color: Colors.black87,
-              ),
-            ),
-          ],
-        ),
-        SizedBox(
-          height: 4,
-        ),
+          ),
+        ],
+      ),
+      SizedBox(height: 2)
+    ];
+
+    if (value != null) {
+      items.add(
         Text(
           value,
           style: TextStyle(fontSize: 16, color: Colors.black87),
         ),
-      ],
+      );
+    }
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: items,
     );
   }
 }

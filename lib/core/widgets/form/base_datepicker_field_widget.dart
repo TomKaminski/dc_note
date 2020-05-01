@@ -105,7 +105,7 @@ class _BaseDatePickerFieldWidgetState extends State<BaseDatePickerFieldWidget> {
                                   color: (isDisabled || widget.isDisabled)
                                       ? Colors.black12
                                       : widget.blocField.value != null
-                                          ? AppColors.main
+                                          ? AppColors.secondary
                                           : Colors.black87)),
                           SizedBox(
                             height: 12,

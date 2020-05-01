@@ -44,8 +44,7 @@ class AddProductScreenState extends State<AddProductScreen> {
         title: Text(
           widget.editModel != null ? "Edytuj produkt" : "Dodaj produkt",
           textAlign: TextAlign.start,
-          style: TextStyle(
-              fontSize: 24, fontWeight: FontWeight.w300, color: Colors.white),
+          style: TextStyle(fontSize: 20),
         ),
       ),
       body: BlocConsumer<AddProductBloc, BooleanState>(
@@ -68,8 +67,7 @@ class AddProductScreenState extends State<AddProductScreen> {
                       child: Text(
                         'Dodaj produkt wypełniając odpowiednie pola. Data ważności, notatki oraz pole "Aktualnie używam" są opcjonalne. W każdej chwili możesz je zmienić w widoku edycji produktu.',
                         style: TextStyle(
-                            color: AppColors.main,
-                            fontWeight: FontWeight.w600,
+                            fontWeight: FontWeight.w700,
                             fontSize: 14,
                             height: 1.6),
                       ),

@@ -38,8 +38,7 @@ class _CategorySelectorScreenState extends State<CategorySelectorScreen> {
           title: Text(
             "Wybierz kategorię",
             textAlign: TextAlign.start,
-            style: TextStyle(
-                fontSize: 22, fontWeight: FontWeight.w300, color: Colors.white),
+            style: TextStyle(fontSize: 20),
           ),
         ),
         body: CategoryList());
@@ -57,13 +56,14 @@ class BottomSearchBarWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: AppColors.main,
+      color: AppColors.primary,
       child: Padding(
         padding: const EdgeInsets.fromLTRB(24, 0, 24, 8),
         child: TextField(
           onChanged: (text) => onChanged(text),
           style: TextStyle(fontSize: 14),
           decoration: InputDecoration(
+              prefixIcon: Icon(Icons.search),
               contentPadding: EdgeInsets.symmetric(vertical: 0, horizontal: 24),
               border: OutlineInputBorder(
                 borderSide: BorderSide(color: Colors.transparent),
@@ -86,7 +86,7 @@ class BottomSearchBarWidget extends StatelessWidget {
               filled: true,
               hintStyle: TextStyle(color: Colors.grey[800]),
               hintText: "Wyszukaj",
-              fillColor: Colors.white54),
+              fillColor: Colors.white70),
         ),
       ),
     );

@@ -26,7 +26,7 @@ class FormSubmitButton extends StatelessWidget {
             gradient: LinearGradient(
                 colors: [
                   Theme.of(context).primaryColorLight,
-                  Theme.of(context).primaryColor,
+                  Theme.of(context).accentColor,
                 ],
                 begin: Alignment.centerLeft,
                 end: Alignment.centerRight,

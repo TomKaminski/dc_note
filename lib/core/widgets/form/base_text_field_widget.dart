@@ -94,7 +94,7 @@ class _BaseTextFieldWidgetState extends State<BaseTextFieldWidget> {
                         letterSpacing: 1,
                         color: (isDisabled || widget.isDisabled)
                             ? Colors.black12
-                            : AppColors.main),
+                            : AppColors.secondary),
                     cursorColor: Colors.grey,
                     obscureText: _obscureText,
                     keyboardType: widget.onlyNumbers

@@ -37,8 +37,7 @@ class InUseProductsScreenState extends State<InUseProductsScreen> {
         title: Text(
           "Używane produkty",
           textAlign: TextAlign.start,
-          style: TextStyle(
-              fontSize: 24, fontWeight: FontWeight.w300, color: Colors.white),
+          style: TextStyle(fontSize: 20),
         ),
       ),
       floatingActionButton: FloatingActionButton(
@@ -66,6 +65,12 @@ class InUseProductsScreenState extends State<InUseProductsScreen> {
             );
           }
           if (state is InUseProductsLoaded) {
+            // return ListWheelScrollView(
+            //   children: state.products
+            //       .map((e) => InUseProductListItemWidget(product: e))
+            //       .toList(),
+            //   itemExtent: 150,
+            // );
             return LiquidPullToRefresh(
               backgroundColor: Colors.white,
               springAnimationDurationInMilliseconds: 300,

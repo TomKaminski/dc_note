@@ -15,7 +15,7 @@ class CategoryList
               ? TextStyle(
                   fontWeight: FontWeight.bold,
                   fontSize: 20,
-                  color: AppColors.main)
+                  color: AppColors.secondary)
               : TextStyle(
                   fontWeight: FontWeight.normal,
                   fontSize: 15,
@@ -24,7 +24,7 @@ class CategoryList
           ? ImageIcon(
               AssetImage("assets/images/${element.category.imageName}"),
               size: 34,
-              color: AppColors.main,
+              color: AppColors.secondary,
             )
           : null,
     );

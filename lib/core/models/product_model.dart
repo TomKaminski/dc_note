@@ -4,6 +4,13 @@ import 'package:DC_Note/database/app_database.dart';
 
 import 'base_app_model.dart';
 
+class CategoryEntry {
+  final CategorySelectorItem entry;
+  final List<ProductModel> children;
+
+  CategoryEntry(this.entry, this.children);
+}
+
 class ProductModel extends BaseAppModel {
   final int id;
   final bool inUse;

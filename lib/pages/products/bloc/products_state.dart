@@ -14,14 +14,14 @@ class ProductsError extends ProductsState {}
 class ProductsUpdated extends ProductsState {}
 
 class ProductsLoaded extends ProductsState {
-  final List<ProductModel> products;
+  final List<CategoryEntry> categories;
 
-  const ProductsLoaded({this.products});
+  const ProductsLoaded({this.categories});
 
-  ProductsLoaded copyWith({List<ProductModel> accounts}) {
-    return ProductsLoaded(products: accounts ?? this.products);
+  ProductsLoaded copyWith({List<CategoryEntry> categories}) {
+    return ProductsLoaded(categories: categories ?? this.categories);
   }
 
   @override
-  List<Object> get props => [products];
+  List<Object> get props => [categories];
 }

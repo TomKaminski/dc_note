@@ -16,7 +16,7 @@ abstract class BaseSelectorItem {
         ImageIcon(
           item.icon,
           size: 28,
-          color: AppColors.main,
+          color: AppColors.primary,
         ),
         SizedBox(width: 4),
       ]);
@@ -28,7 +28,7 @@ abstract class BaseSelectorItem {
           fontSize: 15,
           fontWeight: FontWeight.bold,
           letterSpacing: 1,
-          color: (isDisabled) ? Colors.black12 : AppColors.main),
+          color: (isDisabled) ? Colors.black12 : AppColors.secondary),
     ));
     return Row(
       children: items,

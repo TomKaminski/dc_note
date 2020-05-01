@@ -36,7 +36,6 @@ class _TabPageState extends State<TabsScreen> {
       body: getChild(),
       bottomNavigationBar: BottomNavigationBar(
           currentIndex: _selectedIndex,
-          backgroundColor: AppColors.softMain,
           type: BottomNavigationBarType.shifting,
           onTap: _onItemTapped,
           items: [
@@ -49,13 +48,13 @@ class _TabPageState extends State<TabsScreen> {
   BottomNavigationBarItem createBottomNavItem(
       int index, String text, IconData icon) {
     return BottomNavigationBarItem(
-      backgroundColor: AppColors.main,
+      backgroundColor: AppColors.primary,
       title: Text(
         text,
         style: TextStyle(color: Colors.white, fontWeight: FontWeight.w600),
       ),
       icon: ClayContainer(
-        color: AppColors.main,
+        color: AppColors.primary,
         curveType: CurveType.concave,
         emboss: _selectedIndex == index,
         borderRadius: 40,

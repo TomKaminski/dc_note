@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../gradient_circular_button.dart';
+
 class ModalActionItem {
   final String name;
   final TextStyle style;
@@ -15,25 +17,26 @@ class ModalActionItemWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Material(
-      color: Colors.white,
-      borderRadius: BorderRadius.all(
-        Radius.circular(24),
-      ),
-      child: InkWell(
-        borderRadius: BorderRadius.all(
-          Radius.circular(24),
-        ),
-        onTap: item.onPressed,
-        child: Center(
-          child: Padding(
-            padding: const EdgeInsets.symmetric(vertical: 16.0),
-            child: Text(
-              item.name,
-              style: item.style ?? TextStyle(color: Colors.black),
-            ),
-          ),
-        ),
+    return GradientCircularButton(
+      disabled: false,
+      gradient: LinearGradient(
+          colors: [
+            Theme.of(context).primaryColor,
+            Theme.of(context).accentColor,
+          ],
+          begin: Alignment.topCenter,
+          end: Alignment.bottomCenter,
+          stops: [0.3, 1.0]),
+      onPressed: item.onPressed,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          Text(
+            item.name,
+            style: TextStyle(
+                color: Colors.white, fontWeight: FontWeight.bold, fontSize: 14),
+          )
+        ],
       ),
     );
   }
