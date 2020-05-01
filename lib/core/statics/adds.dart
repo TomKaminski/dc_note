@@ -10,22 +10,18 @@ class AppAds {
   static final String _appId =
       Platform.isAndroid ? 'ca-app-pub-9001976910782778~3249431672' : '---';
 
-  static final String _bannerUnitId =
-      Platform.isAndroid ? 'ca-app-pub-3940256099942544/6300978111' : '---';
-
   static final String _screenUnitId =
-      Platform.isAndroid ? 'ca-app-pub-3940256099942544/1033173712' : '---';
+      Platform.isAndroid ? 'ca-app-pub-9001976910782778/2866288290' : '---';
 
   /// Assign a listener.
   static MobileAdListener _eventListener = (MobileAdEvent event) {
     if (event == MobileAdEvent.clicked) {
-      print("_eventListener: The opened ad is clicked on.");
+      //print("_eventListener: The opened ad is clicked on.");
     }
   };
 
   static void init() => _ads ??= Ads(
         _appId,
-        bannerUnitId: _bannerUnitId,
         screenUnitId: _screenUnitId,
         keywords: <String>[
           'beauty',
@@ -35,7 +31,7 @@ class AppAds {
           'makijaż'
         ],
         childDirected: false,
-        testing: true,
+        testDevices: ["30DB302FF5A900346A5F938F29C0711A"],
         listener: _eventListener,
       );
 

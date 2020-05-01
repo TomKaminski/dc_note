@@ -32,7 +32,7 @@ class AboutScreen extends StatelessWidget {
                           "Pierwsza wersja aplikacji posiada tylko podstawowe funkcjonalności. \nZaplanowane są m.in."),
                       SizedBox(height: 8),
                       Text("\u2022 Notyfikacje o końcu daty ważności produktu"),
-                      Text("\u2022 Skanowanie kodu kreskowego"),
+                      Text("\u2022 Skanowanie kodu kreskowego produktu"),
                       Text("\u2022 Budowanie listy zakupowej"),
                     ],
                   )),

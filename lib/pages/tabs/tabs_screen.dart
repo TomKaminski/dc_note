@@ -5,7 +5,6 @@ import 'package:DC_Note/pages/in_use_products/in_use_products_page.dart';
 import 'package:DC_Note/pages/products/products_page.dart';
 import 'package:clay_containers/constants.dart';
 import 'package:clay_containers/widgets/clay_containers.dart';
-import 'package:firebase_admob/firebase_admob.dart';
 import 'package:flutter/material.dart';
 
 class TabsScreen extends StatefulWidget {

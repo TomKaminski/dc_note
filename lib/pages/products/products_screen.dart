@@ -84,7 +84,7 @@ class ProductsScreenState extends State<ProductsScreen> {
                           ),
                           SizedBox(width: 8),
                           Text(
-                            category.entry.title,
+                            '${category.entry.title}${category.children.length > 0 ? " ( ${category.children.length} )" : ""}',
                             style: TextStyle(
                                 fontSize: 18, fontWeight: FontWeight.w500),
                           ),
