@@ -93,6 +93,7 @@ class _BaseSelectorFieldWidgetState<TItem>
                     ),
                   ),
                   Container(
+                    color: Colors.transparent,
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [

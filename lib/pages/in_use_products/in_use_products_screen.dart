@@ -33,7 +33,7 @@ class InUseProductsScreenState extends State<InUseProductsScreen> {
                 .add(text),
           ),
         ),
-        centerTitle: true,
+        centerTitle: false,
         title: Text(
           "Używane produkty",
           textAlign: TextAlign.start,

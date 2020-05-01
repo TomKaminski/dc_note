@@ -78,7 +78,7 @@ class _BaseDatePickerFieldWidgetState extends State<BaseDatePickerFieldWidget> {
                       final selectedDate = await showDatePicker(
                           builder: (ctx, child) {
                             return Theme(
-                                data: ThemeData(primarySwatch: Colors.indigo),
+                                data: ThemeData(primarySwatch: Colors.teal),
                                 child: child);
                           },
                           cancelText: "Anuluj",
@@ -91,6 +91,7 @@ class _BaseDatePickerFieldWidgetState extends State<BaseDatePickerFieldWidget> {
                       widget.blocField.onChanged(selectedDate);
                     },
                     child: Container(
+                      color: Colors.transparent,
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [

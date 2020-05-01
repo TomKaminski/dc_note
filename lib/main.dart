@@ -1,13 +1,10 @@
 import 'package:DC_Note/core/statics/colors.dart';
 import 'package:DC_Note/pages/add_product/add_product_screen.dart';
-import 'package:DC_Note/pages/products/products_screen.dart';
 import 'package:DC_Note/pages/splash/splash_screen.dart';
 import 'package:DC_Note/pages/tabs/tabs_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-
 import 'core/statics/application.dart';
-import 'generated/l10n.dart';
 
 void main() {
   Application.init();
@@ -29,7 +26,6 @@ class AppComponentState extends State<AppComponent> {
       localizationsDelegates: [
         GlobalMaterialLocalizations.delegate,
         GlobalWidgetsLocalizations.delegate,
-        S.delegate
       ],
       supportedLocales: [const Locale("pl", "PL")],
       theme: ThemeData(

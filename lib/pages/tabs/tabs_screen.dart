@@ -1,8 +1,11 @@
+import 'package:DC_Note/core/statics/adds.dart';
 import 'package:DC_Note/core/statics/colors.dart';
+import 'package:DC_Note/pages/about/about_screen.dart';
 import 'package:DC_Note/pages/in_use_products/in_use_products_page.dart';
 import 'package:DC_Note/pages/products/products_page.dart';
 import 'package:clay_containers/constants.dart';
 import 'package:clay_containers/widgets/clay_containers.dart';
+import 'package:firebase_admob/firebase_admob.dart';
 import 'package:flutter/material.dart';
 
 class TabsScreen extends StatefulWidget {
@@ -25,9 +28,27 @@ class _TabPageState extends State<TabsScreen> {
         return ProductsPage();
       case 1:
         return InUseProductsPage();
+      case 2:
+        return AboutScreen();
       default:
         return ProductsPage();
     }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    AppAds.init();
+
+    Future.delayed(Duration(seconds: 2)).then(
+      (value) => AppAds.showFullscreen(state: this),
+    );
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    AppAds.dispose();
   }
 
   @override
@@ -41,6 +62,7 @@ class _TabPageState extends State<TabsScreen> {
           items: [
             createBottomNavItem(0, "Produkty", Icons.list),
             createBottomNavItem(1, "Używane", Icons.mood),
+            createBottomNavItem(2, "O aplikacji", Icons.info),
           ]),
     );
   }
@@ -51,7 +73,7 @@ class _TabPageState extends State<TabsScreen> {
       backgroundColor: AppColors.primary,
       title: Text(
         text,
-        style: TextStyle(color: Colors.white, fontWeight: FontWeight.w600),
+        style: TextStyle(fontWeight: FontWeight.w600, color: Colors.black87),
       ),
       icon: ClayContainer(
         color: AppColors.primary,
@@ -61,10 +83,7 @@ class _TabPageState extends State<TabsScreen> {
         spread: 1,
         child: Padding(
           padding: const EdgeInsets.all(8),
-          child: Icon(
-            icon,
-            color: Colors.white,
-          ),
+          child: Icon(icon),
         ),
       ),
     );

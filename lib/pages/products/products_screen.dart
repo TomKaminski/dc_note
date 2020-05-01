@@ -86,7 +86,7 @@ class ProductsScreenState extends State<ProductsScreen> {
                           Text(
                             category.entry.title,
                             style: TextStyle(
-                                fontSize: 18, fontWeight: FontWeight.bold),
+                                fontSize: 18, fontWeight: FontWeight.w500),
                           ),
                         ],
                       ),
