@@ -53,7 +53,7 @@ class _SplashScreenState extends State<SplashScreen> {
                   Row(mainAxisAlignment: MainAxisAlignment.center, children: [
                     ImageIcon(
                       AssetImage("assets/images/body.png"),
-                      color: AppColors.primary,
+                      color: AppColors.secondary,
                       size: 28,
                     ),
                     SizedBox(width: 6),
@@ -62,7 +62,7 @@ class _SplashScreenState extends State<SplashScreen> {
                       opacity: loaded ? 1 : 0,
                       child: ImageIcon(
                         AssetImage("assets/images/comb.png"),
-                        color: AppColors.primary,
+                        color: AppColors.secondary,
                         size: 28,
                       ),
                     ),
@@ -72,7 +72,7 @@ class _SplashScreenState extends State<SplashScreen> {
                       opacity: loaded ? 1 : 0,
                       child: ImageIcon(
                         AssetImage("assets/images/face-mask.png"),
-                        color: AppColors.primary,
+                        color: AppColors.secondary,
                         size: 28,
                       ),
                     ),
@@ -82,7 +82,7 @@ class _SplashScreenState extends State<SplashScreen> {
                       opacity: loaded ? 1 : 0,
                       child: ImageIcon(
                         AssetImage("assets/images/nail-polish.png"),
-                        color: AppColors.primary,
+                        color: AppColors.secondary,
                         size: 28,
                       ),
                     ),
@@ -92,7 +92,7 @@ class _SplashScreenState extends State<SplashScreen> {
                       opacity: loaded ? 1 : 0,
                       child: ImageIcon(
                         AssetImage("assets/images/make-up.png"),
-                        color: AppColors.primary,
+                        color: AppColors.secondary,
                         size: 28,
                       ),
                     ),

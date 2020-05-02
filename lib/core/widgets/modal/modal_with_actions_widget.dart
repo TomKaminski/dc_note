@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:DC_Note/core/statics/colors.dart';
 
 import '../gradient_circular_button.dart';
 
@@ -21,12 +22,12 @@ class ModalActionItemWidget extends StatelessWidget {
       disabled: false,
       gradient: LinearGradient(
           colors: [
-            Theme.of(context).primaryColor,
-            Theme.of(context).accentColor,
+            AppColors.primary,
+            AppColors.secondary,
           ],
-          begin: Alignment.topCenter,
-          end: Alignment.bottomCenter,
-          stops: [0.3, 1.0]),
+          begin: Alignment.centerLeft,
+          end: Alignment.centerRight,
+          stops: [0, 1.0]),
       onPressed: item.onPressed,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,

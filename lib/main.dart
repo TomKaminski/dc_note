@@ -22,6 +22,7 @@ class AppComponentState extends State<AppComponent> {
   @override
   Widget build(BuildContext context) {
     final app = MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: 'DC Note',
       localizationsDelegates: [
         GlobalMaterialLocalizations.delegate,

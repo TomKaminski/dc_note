@@ -16,7 +16,7 @@ abstract class BaseSelectorItem {
         ImageIcon(
           item.icon,
           size: 28,
-          color: AppColors.primary,
+          color: AppColors.secondary,
         ),
         SizedBox(width: 4),
       ]);
