@@ -7,10 +7,15 @@ class Application {
   static GetIt serviceLocator;
   static ThemeData appTheme;
   static AppDatabase database;
+  static bool showedFullscreenAdd;
+  static bool showedBannerAdd;
 
   static void init() {
     Application.serviceLocator = GetIt.instance;
     Application.serviceLocator.allowReassignment = true;
+    Application.showedFullscreenAdd = false;
+    Application.showedBannerAdd = false;
+
     Application.database = AppDatabase();
 
     initDependencies(serviceLocator);

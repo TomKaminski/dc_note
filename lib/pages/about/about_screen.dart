@@ -1,6 +1,24 @@
+import 'package:DC_Note/core/statics/adds.dart';
 import 'package:flutter/material.dart';
 
-class AboutScreen extends StatelessWidget {
+class AboutScreen extends StatefulWidget {
+  @override
+  _AboutScreenState createState() => _AboutScreenState();
+}
+
+class _AboutScreenState extends State<AboutScreen> {
+  @override
+  void initState() {
+    AppAds.showBanner(anchorOffset: 80);
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    AppAds.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

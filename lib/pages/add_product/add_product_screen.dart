@@ -1,5 +1,7 @@
 import 'package:DC_Note/core/bloc/boolean_state.dart';
 import 'package:DC_Note/core/models/product_model.dart';
+import 'package:DC_Note/core/statics/adds.dart';
+import 'package:DC_Note/core/statics/application.dart';
 import 'package:DC_Note/core/statics/colors.dart';
 import 'package:DC_Note/core/widgets/form/base_checkbox_field_widget.dart';
 import 'package:DC_Note/core/widgets/form/base_datepicker_field_widget.dart';
@@ -28,6 +30,11 @@ class AddProductScreenState extends State<AddProductScreen> {
   void initState() {
     bloc = AddProductBloc(widget.editModel);
     super.initState();
+
+    if (Application.showedFullscreenAdd == false) {
+      Application.showedFullscreenAdd = true;
+      AppAds.showFullscreen(state: this);
+    }
   }
 
   @override

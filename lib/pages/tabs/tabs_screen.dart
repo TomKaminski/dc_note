@@ -38,10 +38,6 @@ class _TabPageState extends State<TabsScreen> {
   void initState() {
     super.initState();
     AppAds.init();
-
-    Future.delayed(Duration(seconds: 2)).then(
-      (value) => AppAds.showFullscreen(state: this),
-    );
   }
 
   @override

@@ -13,6 +13,9 @@ class AppAds {
   static final String _screenUnitId =
       Platform.isAndroid ? 'ca-app-pub-9001976910782778/2866288290' : '---';
 
+  static final String _banerUnitId =
+      Platform.isAndroid ? 'ca-app-pub-9001976910782778/8973451519' : '---';
+
   /// Assign a listener.
   static MobileAdListener _eventListener = (MobileAdEvent event) {
     if (event == MobileAdEvent.clicked) {
@@ -23,6 +26,7 @@ class AppAds {
   static void init() => _ads ??= Ads(
         _appId,
         screenUnitId: _screenUnitId,
+        bannerUnitId: _banerUnitId,
         keywords: <String>[
           'beauty',
           'cosmetics',
