@@ -8,6 +8,7 @@ import 'package:DC_Note/core/widgets/form/base_datepicker_field_widget.dart';
 import 'package:DC_Note/core/widgets/form/base_form_submit_button.dart';
 import 'package:DC_Note/core/widgets/form/base_selector_field_widget.dart';
 import 'package:DC_Note/core/widgets/form/base_text_field_widget.dart';
+import 'package:DC_Note/core/widgets/neuro/app_bar_buttons.dart';
 import 'package:DC_Note/pages/add_product/bloc/add_product_bloc.dart';
 import 'package:DC_Note/pages/category_selector/category_selector_page.dart';
 import 'package:flutter/material.dart';
@@ -33,7 +34,7 @@ class AddProductScreenState extends State<AddProductScreen> {
 
     if (Application.showedFullscreenAdd == false) {
       Application.showedFullscreenAdd = true;
-      AppAds.showFullscreen(state: this);
+      //AppAds.showFullscreen(state: this);
     }
   }
 
@@ -48,6 +49,7 @@ class AddProductScreenState extends State<AddProductScreen> {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
+        leading: AppBarButton.back(),
         title: Text(
           widget.editModel != null ? "Edytuj produkt" : "Dodaj produkt",
           textAlign: TextAlign.start,

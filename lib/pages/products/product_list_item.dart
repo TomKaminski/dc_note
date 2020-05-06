@@ -2,6 +2,7 @@ import 'package:DC_Note/core/models/product_model.dart';
 import 'package:DC_Note/core/statics/colors.dart';
 import 'package:DC_Note/core/widgets/modal/modal_action_widget.dart';
 import 'package:DC_Note/core/widgets/modal/modal_with_actions_widget.dart';
+import 'package:DC_Note/core/widgets/neuro/list_buttons.dart';
 import 'package:DC_Note/pages/add_product/add_product_screen.dart';
 import 'package:DC_Note/pages/products/bloc/products_bloc.dart';
 import 'package:DC_Note/pages/products/product_detail_dialog.dart';
@@ -17,64 +18,100 @@ class ProductListItemWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
-      child: Card(
-        elevation: 5,
-        child: ListTile(
-          contentPadding: EdgeInsets.symmetric(vertical: 4, horizontal: 10),
-          onTap: () async {
-            final productBloc = BlocProvider.of<ProductsBloc>(context);
-            showDialog(
-              context: context,
-              builder: (context) {
-                return ProductDetailDialog(
-                    product: product,
-                    actions: buildModalActions(context, productBloc));
-              },
-            );
+    return GestureDetector(
+      onTap: () async {
+        final productBloc = BlocProvider.of<ProductsBloc>(context);
+        showDialog(
+          context: context,
+          builder: (context) {
+            return ProductDetailDialog(
+                product: product,
+                actions: buildModalActions(context, productBloc));
           },
-          title: Container(
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  "${product.quantity}x ${product.name}",
-                  style: TextStyle(
-                      fontSize: 17,
-                      fontWeight: FontWeight.normal,
-                      color: AppColors.secondary),
-                ),
-                Visibility(
-                  visible: product.inUse,
-                  child: ImageIcon(
-                    AssetImage("assets/images/star.png"),
-                    color: AppColors.secondary,
-                  ),
-                )
-              ],
-            ),
-          ),
-          subtitle: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              SizedBox(height: 4),
+        );
+      },
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            ListButton.favouriteNotSelected(() {}),
+            SizedBox(width: 12),
+            Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+              Text(
+                "${product.quantity}x ${product.name}",
+                style: TextStyle(
+                    fontSize: 15,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.black87),
+              ),
+              SizedBox(height: 1),
               Text(
                 product.category.title,
                 maxLines: 3,
                 style: TextStyle(
-                    fontSize: 14,
+                    fontSize: 12,
                     fontWeight: FontWeight.bold,
                     letterSpacing: 0.5,
-                    color: Colors.black87),
+                    color: Colors.black54),
               ),
-              ...getDateUntilWidgets()
-            ],
-          ),
+              //...getDateUntilWidgets()
+            ])
+          ],
         ),
+      ),
+    );
+    return ListTile(
+      onTap: () async {
+        final productBloc = BlocProvider.of<ProductsBloc>(context);
+        showDialog(
+          context: context,
+          builder: (context) {
+            return ProductDetailDialog(
+                product: product,
+                actions: buildModalActions(context, productBloc));
+          },
+        );
+      },
+      leading: ListButton.favouriteNotSelected(() {}),
+      title: Container(
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(
+              "${product.quantity}x ${product.name}",
+              style: TextStyle(
+                  fontSize: 15,
+                  fontWeight: FontWeight.bold,
+                  color: AppColors.secondary),
+            ),
+            Visibility(
+              visible: product.inUse,
+              child: ImageIcon(
+                AssetImage("assets/images/star.png"),
+                color: AppColors.secondary,
+              ),
+            )
+          ],
+        ),
+      ),
+      subtitle: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Text(
+            product.category.title,
+            maxLines: 3,
+            style: TextStyle(
+                fontSize: 13,
+                fontWeight: FontWeight.bold,
+                letterSpacing: 0.5,
+                color: Colors.black87),
+          ),
+          //...getDateUntilWidgets()
+        ],
       ),
     );
   }

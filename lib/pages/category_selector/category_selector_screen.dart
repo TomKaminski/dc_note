@@ -4,6 +4,7 @@ import 'package:DC_Note/pages/category_selector/bloc/category_selector_bloc.dart
 import 'package:DC_Note/pages/category_selector/category_list.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 
 class CategorySelectorScreen extends StatefulWidget {
   final String title;
@@ -58,35 +59,49 @@ class BottomSearchBarWidget extends StatelessWidget {
     return Container(
       color: AppColors.primary,
       child: Padding(
-        padding: const EdgeInsets.fromLTRB(24, 0, 24, 8),
-        child: TextField(
-          onChanged: (text) => onChanged(text),
-          style: TextStyle(fontSize: 14),
-          decoration: InputDecoration(
-              prefixIcon: Icon(Icons.search),
-              contentPadding: EdgeInsets.symmetric(vertical: 0, horizontal: 24),
-              border: OutlineInputBorder(
-                borderSide: BorderSide(color: Colors.transparent),
-                borderRadius: const BorderRadius.all(
-                  const Radius.circular(20.0),
+        padding: const EdgeInsets.fromLTRB(34, 0, 34, 8),
+        child: Neumorphic(
+          boxShape: NeumorphicBoxShape.roundRect(BorderRadius.circular(20)),
+          style: NeumorphicStyle(
+              color: AppColors.primary,
+              depth: -10,
+              shadowDarkColorEmboss: Colors.black54,
+              shadowLightColorEmboss: Colors.black38),
+          child: TextField(
+            cursorColor: AppColors.secondary,
+            onChanged: (text) => onChanged(text),
+            style: TextStyle(
+                fontSize: 14,
+                fontWeight: FontWeight.bold,
+                color: Colors.black87),
+            decoration: InputDecoration(
+                prefixIcon: Icon(
+                  Icons.search,
+                  color: Colors.black87,
                 ),
-              ),
-              focusedBorder: OutlineInputBorder(
-                borderSide: BorderSide(color: Colors.transparent),
-                borderRadius: const BorderRadius.all(
-                  const Radius.circular(20.0),
+                contentPadding:
+                    EdgeInsets.symmetric(vertical: 0, horizontal: 24),
+                border: OutlineInputBorder(
+                  borderSide: BorderSide(color: Colors.transparent),
+                  borderRadius: const BorderRadius.all(
+                    const Radius.circular(20.0),
+                  ),
                 ),
-              ),
-              enabledBorder: OutlineInputBorder(
-                borderSide: BorderSide(color: Colors.transparent),
-                borderRadius: const BorderRadius.all(
-                  const Radius.circular(20.0),
+                focusedBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color: Colors.transparent),
+                  borderRadius: const BorderRadius.all(
+                    const Radius.circular(20.0),
+                  ),
                 ),
-              ),
-              filled: true,
-              hintStyle: TextStyle(color: Colors.grey[800]),
-              hintText: "Wyszukaj",
-              fillColor: Colors.white70),
+                enabledBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color: Colors.transparent),
+                  borderRadius: const BorderRadius.all(
+                    const Radius.circular(20.0),
+                  ),
+                ),
+                hintStyle: TextStyle(color: Colors.grey[800]),
+                hintText: "Wyszukaj"),
+          ),
         ),
       ),
     );

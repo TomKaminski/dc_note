@@ -30,6 +30,7 @@ class AppComponentState extends State<AppComponent> {
       ],
       supportedLocales: [const Locale("pl", "PL")],
       theme: ThemeData(
+        scaffoldBackgroundColor: AppColors.appGrey,
         fontFamily: "Montserrat",
         accentColor: AppColors.secondary,
         primaryColor: AppColors.primary,
