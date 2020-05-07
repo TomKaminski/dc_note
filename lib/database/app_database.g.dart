@@ -185,15 +185,13 @@ class ProductTableCompanion extends UpdateCompanion<ProductEntity> {
   ProductTableCompanion.insert({
     this.id = const Value.absent(),
     @required String name,
-    @required bool inUse,
-    @required bool isReviewed,
+    this.inUse = const Value.absent(),
+    this.isReviewed = const Value.absent(),
     @required int quantity,
     @required int categoryId,
     this.useUntil = const Value.absent(),
     this.notes = const Value.absent(),
   })  : name = Value(name),
-        inUse = Value(inUse),
-        isReviewed = Value(isReviewed),
         quantity = Value(quantity),
         categoryId = Value(categoryId);
   ProductTableCompanion copyWith(
@@ -249,11 +247,8 @@ class $ProductTableTable extends ProductTable
   @override
   GeneratedBoolColumn get inUse => _inUse ??= _constructInUse();
   GeneratedBoolColumn _constructInUse() {
-    return GeneratedBoolColumn(
-      'in_use',
-      $tableName,
-      false,
-    );
+    return GeneratedBoolColumn('in_use', $tableName, false,
+        defaultValue: const Constant(false));
   }
 
   final VerificationMeta _isReviewedMeta = const VerificationMeta('isReviewed');
@@ -261,11 +256,8 @@ class $ProductTableTable extends ProductTable
   @override
   GeneratedBoolColumn get isReviewed => _isReviewed ??= _constructIsReviewed();
   GeneratedBoolColumn _constructIsReviewed() {
-    return GeneratedBoolColumn(
-      'is_reviewed',
-      $tableName,
-      false,
-    );
+    return GeneratedBoolColumn('is_reviewed', $tableName, false,
+        defaultValue: const Constant(false));
   }
 
   final VerificationMeta _quantityMeta = const VerificationMeta('quantity');
@@ -341,14 +333,10 @@ class $ProductTableTable extends ProductTable
     if (d.inUse.present) {
       context.handle(
           _inUseMeta, inUse.isAcceptableValue(d.inUse.value, _inUseMeta));
-    } else if (isInserting) {
-      context.missing(_inUseMeta);
     }
     if (d.isReviewed.present) {
       context.handle(_isReviewedMeta,
           isReviewed.isAcceptableValue(d.isReviewed.value, _isReviewedMeta));
-    } else if (isInserting) {
-      context.missing(_isReviewedMeta);
     }
     if (d.quantity.present) {
       context.handle(_quantityMeta,
