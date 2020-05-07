@@ -158,8 +158,10 @@ class CategoriesProvider {
             key: CategoryKeyEnum.hair.name + "_${e.key}"))
         .toList();
 
-    await Application.database.categoryDao
-        .insertAll(entities, InsertMode.insertOrIgnore);
+    for (var category in entities) {
+      await Application.database.categoryDao
+          .insert(category, InsertMode.insertOrIgnore);
+    }
   }
 
   _insertOrReplaceFaceSubcategories() async {
@@ -194,8 +196,10 @@ class CategoriesProvider {
             key: CategoryKeyEnum.face.name + "_${e.key}"))
         .toList();
 
-    await Application.database.categoryDao
-        .insertAll(entities, InsertMode.insertOrIgnore);
+    for (var category in entities) {
+      await Application.database.categoryDao
+          .insert(category, InsertMode.insertOrIgnore);
+    }
   }
 
   _insertOrReplaceColourSubcategories() async {
@@ -232,8 +236,10 @@ class CategoriesProvider {
             key: CategoryKeyEnum.colour.name + "_${e.key}"))
         .toList();
 
-    await Application.database.categoryDao
-        .insertAll(entities, InsertMode.insertOrIgnore);
+    for (var category in entities) {
+      await Application.database.categoryDao
+          .insert(category, InsertMode.insertOrIgnore);
+    }
   }
 
   _insertOrReplaceBodySubcategories() async {
@@ -276,8 +282,10 @@ class CategoriesProvider {
             key: CategoryKeyEnum.body.name + "_${e.key}"))
         .toList();
 
-    await Application.database.categoryDao
-        .insertAll(entities, InsertMode.insertOrIgnore);
+    for (var category in entities) {
+      await Application.database.categoryDao
+          .insert(category, InsertMode.insertOrIgnore);
+    }
   }
 
   _insertOrReplaceNailSubcategories() async {
@@ -310,7 +318,10 @@ class CategoriesProvider {
             key: CategoryKeyEnum.nail.name + "_${e.key}"))
         .toList();
 
-    await Application.database.categoryDao
-        .insertAll(entities, InsertMode.insertOrIgnore);
+    for (var category in entities) {
+      await Application.database.categoryDao
+          .insert(category, InsertMode.insertOrIgnore);
+    }
+    ;
   }
 }
