@@ -1,6 +1,6 @@
 import 'package:DC_Note/pages/category_selector/category_selector_screen.dart';
-import 'package:DC_Note/pages/in_use_products/bloc/in_use_products_bloc.dart';
-import 'package:DC_Note/pages/in_use_products/in_use_product_list_item.dart';
+import 'package:DC_Note/pages/product_row/base_product_row.dart';
+import 'package:DC_Note/pages/products/bloc/products_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:liquid_pull_to_refresh/liquid_pull_to_refresh.dart';
@@ -13,12 +13,12 @@ class InUseProductsScreen extends StatefulWidget {
 }
 
 class InUseProductsScreenState extends State<InUseProductsScreen> {
-  InUseProductsBloc _bloc;
+  ProductsBloc _bloc;
 
   @override
   void initState() {
     super.initState();
-    _bloc = BlocProvider.of<InUseProductsBloc>(context);
+    _bloc = BlocProvider.of<ProductsBloc>(context);
   }
 
   @override
@@ -28,9 +28,8 @@ class InUseProductsScreenState extends State<InUseProductsScreen> {
         bottom: PreferredSize(
           preferredSize: const Size.fromHeight(48),
           child: BottomSearchBarWidget(
-            onChanged: (text) => BlocProvider.of<InUseProductsBloc>(context)
-                .searchStream
-                .add(text),
+            onChanged: (text) =>
+                BlocProvider.of<ProductsBloc>(context).searchStream.add(text),
           ),
         ),
         centerTitle: false,
@@ -45,7 +44,7 @@ class InUseProductsScreenState extends State<InUseProductsScreen> {
         onPressed: () async {
           dynamic result = await Navigator.of(context).pushNamed("/addProduct");
           if (result == true) {
-            _bloc.add(LoadInUseProductsEvent(null));
+            _bloc.add(LoadProductsEvent(null));
           }
         },
         child: Icon(
@@ -53,29 +52,23 @@ class InUseProductsScreenState extends State<InUseProductsScreen> {
           color: Colors.white,
         ),
       ),
-      body: BlocConsumer<InUseProductsBloc, InUseProductsState>(
+      body: BlocConsumer<ProductsBloc, ProductsState>(
         bloc: _bloc,
         builder: (
           BuildContext context,
-          InUseProductsState state,
+          ProductsState state,
         ) {
-          if (state is InUseProductsError) {
+          if (state is ProductsError) {
             return Center(
               child: Text('Błąd pobierania produktów.'),
             );
           }
           if (state is InUseProductsLoaded) {
-            // return ListWheelScrollView(
-            //   children: state.products
-            //       .map((e) => InUseProductListItemWidget(product: e))
-            //       .toList(),
-            //   itemExtent: 150,
-            // );
             return LiquidPullToRefresh(
               backgroundColor: Colors.white,
               springAnimationDurationInMilliseconds: 300,
               onRefresh: () async {
-                _bloc.add(LoadInUseProductsEvent(null));
+                _bloc.add(LoadProductsEvent(null));
               },
               child: ListView.builder(
                 itemBuilder: (BuildContext context, int index) {
@@ -88,8 +81,8 @@ class InUseProductsScreenState extends State<InUseProductsScreen> {
                       subtitle: Text("Dotknij + aby dodać nowy produkt."),
                     );
                   }
-                  return InUseProductListItemWidget(
-                      product: state.products[index]);
+                  return BaseProductRowWidget(
+                      product: state.products[index], hideCategory: false);
                 },
                 itemCount:
                     state.products.length == 0 ? 1 : state.products.length,
@@ -101,8 +94,8 @@ class InUseProductsScreenState extends State<InUseProductsScreen> {
             child: CircularProgressIndicator(),
           );
         },
-        listener: (BuildContext context, InUseProductsState state) {
-          if (state is InUseProductsUpdated) {
+        listener: (BuildContext context, ProductsState state) {
+          if (state is ProductsUpdated) {
             Navigator.of(context).pop();
           }
         },

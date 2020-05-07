@@ -6,9 +6,20 @@ import 'base_app_model.dart';
 
 class CategoryEntry {
   final CategorySelectorItem entry;
+  final List<InnerCategoryEntry> children;
+  final List<ProductModel> productsChildren;
+
+  final int productsCount;
+
+  CategoryEntry(
+      this.entry, this.children, this.productsCount, this.productsChildren);
+}
+
+class InnerCategoryEntry {
+  final CategorySelectorItem entry;
   final List<ProductModel> children;
 
-  CategoryEntry(this.entry, this.children);
+  InnerCategoryEntry(this.entry, this.children);
 }
 
 class ProductModel extends BaseAppModel {

@@ -1,4 +1,6 @@
+import 'package:DC_Note/core/statics/colors.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 
 import '../gradient_circular_button.dart';
 
@@ -21,28 +23,31 @@ class FormSubmitButton extends StatelessWidget {
     return StreamBuilder<bool>(
         stream: disabledStream ?? Stream.value(false),
         builder: (context, snapshot) {
-          return GradientCircularButton(
-            disabled: snapshot.data != true || isDisabled,
-            gradient: LinearGradient(
-                colors: [
-                  Theme.of(context).primaryColorLight,
-                  Theme.of(context).accentColor,
+          final disabled = snapshot.data != true || isDisabled;
+          return NeumorphicButton(
+            style: NeumorphicStyle(
+                color: disabled ? AppColors.buttonsGrey : AppColors.primary,
+                shadowLightColorEmboss: disabled ? Colors.black54 : null,
+                depth: -10),
+            onClick: () {
+              if (!disabled) {
+                onPressed();
+              }
+            },
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  Text(
+                    text,
+                    style: TextStyle(
+                        color: Colors.black87,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 18),
+                  )
                 ],
-                begin: Alignment.centerLeft,
-                end: Alignment.centerRight,
-                stops: [0.2, 1.0]),
-            onPressed: onPressed,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                Text(
-                  text,
-                  style: TextStyle(
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 18),
-                )
-              ],
+              ),
             ),
           );
         });

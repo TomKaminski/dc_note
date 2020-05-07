@@ -14,6 +14,8 @@ part 'products_event.dart';
 part 'products_state.dart';
 
 class ProductsBloc extends Bloc<ProductsEvent, ProductsState> {
+  final bool onlyFavourites;
+
   final searchStream = BehaviorSubject<String>();
 
   @override
@@ -22,7 +24,7 @@ class ProductsBloc extends Bloc<ProductsEvent, ProductsState> {
     return super.close();
   }
 
-  ProductsBloc() {
+  ProductsBloc(this.onlyFavourites) {
     searchStream
         .distinct()
         .debounceTime(Duration(milliseconds: 400))
@@ -40,10 +42,17 @@ class ProductsBloc extends Bloc<ProductsEvent, ProductsState> {
   ) async* {
     if (event is LoadProductsEvent) {
       try {
-        final products = (await fetchGroupedProducts(
-                event.searchPhrase ?? searchStream.value))
-            .toList();
-        yield ProductsLoaded(categories: products);
+        if (onlyFavourites) {
+          final products = (await fetchInUseProducts(
+                  event.searchPhrase ?? searchStream.value))
+              .toList();
+          yield InUseProductsLoaded(products: products);
+        } else {
+          final products = (await fetchGroupedProducts(
+                  event.searchPhrase ?? searchStream.value))
+              .toList();
+          yield ProductsLoaded(categories: products);
+        }
       } catch (error) {
         yield ProductsError();
       }
@@ -71,13 +80,14 @@ class ProductsBloc extends Bloc<ProductsEvent, ProductsState> {
     }
   }
 
-  Future<Iterable<ProductModel>> fetchProducts(String searchPhrase) async {
+  Future<Iterable<ProductModel>> fetchInUseProducts(String searchPhrase) async {
     List<ProductEntity> entities;
     if (searchPhrase?.isNotEmpty == true) {
-      entities = await Application.database.productDao
-          .getAllByExpression((tbl) => tbl.name.like("%$searchPhrase%"));
+      entities = await Application.database.productDao.getAllByExpression(
+          (tbl) => tbl.name.like("%$searchPhrase%") & tbl.inUse.equals(true));
     } else {
-      entities = await Application.database.productDao.getAll();
+      entities = await Application.database.productDao
+          .getAllByExpression((tbl) => tbl.inUse.equals(true));
     }
 
     final existingCategories = entities.map((e) => e.categoryId).toSet();
@@ -106,7 +116,7 @@ class ProductsBloc extends Bloc<ProductsEvent, ProductsState> {
     }
 
     final existingCategories = entities.map((e) => e.categoryId).toSet();
-    final categories = Map.fromIterable(
+    Map<int, CategoryEntity> categories = Map.fromIterable(
         await Application.database.categoryDao
             .getAllByExpression((tbl) => tbl.id.isIn(existingCategories)),
         key: (e) => e.id,
@@ -117,14 +127,33 @@ class ProductsBloc extends Bloc<ProductsEvent, ProductsState> {
 
     List<CategoryEntry> result = [];
     mainCategories.forEach((category) {
-      result.add(CategoryEntry(
-          CategorySelectorItem(category.name, category.id, category.parentId,
-              CategoryKeyEnumExtension.fromString(category.key)),
-          products
-              .where((element) =>
-                  element.category.id == category.id ||
-                  element.category.parentId == category.id)
-              .toList()));
+      var innerProductsCount = 0;
+      final innerCategoriesWithProducts = categories.entries
+          .where((element) => element.value.parentId == category.id)
+          .map((e) {
+            final prods = products
+                .where((element) => element.category.id == e.value.id)
+                .toList();
+            innerProductsCount += prods.length;
+            return InnerCategoryEntry(
+              CategorySelectorItem(e.value.name, e.value.id, e.value.parentId,
+                  CategoryKeyEnumExtension.fromString(category.key)),
+              prods,
+            );
+          })
+          .where((element) => element.children.isNotEmpty)
+          .toList();
+      final productsForMainCategory = products
+          .where((element) => element.category.id == category.id)
+          .toList();
+      result.add(
+        CategoryEntry(
+            CategorySelectorItem(category.name, category.id, category.parentId,
+                CategoryKeyEnumExtension.fromString(category.key)),
+            innerCategoriesWithProducts,
+            productsForMainCategory.length + innerProductsCount,
+            productsForMainCategory),
+      );
     });
     return result;
   }

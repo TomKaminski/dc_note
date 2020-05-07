@@ -35,9 +35,8 @@ class BooleanState extends Equatable {
 
 class BooleanStateWithModel<TModel> extends BooleanState {
   final TModel data;
-  const BooleanStateWithModel.processing({this.data}) : super.processing();
-  const BooleanStateWithModel.notProcessing({this.data})
-      : super.notProcessing();
+  const BooleanStateWithModel.processing(this.data) : super.processing();
+  const BooleanStateWithModel.notProcessing(this.data) : super.notProcessing();
   const BooleanStateWithModel.successful(this.data) : super.successful();
   const BooleanStateWithModel.error(AppError error, {this.data})
       : super.error(error);

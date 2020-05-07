@@ -62,17 +62,13 @@ class BottomSearchBarWidget extends StatelessWidget {
         padding: const EdgeInsets.fromLTRB(34, 0, 34, 8),
         child: Neumorphic(
           boxShape: NeumorphicBoxShape.roundRect(BorderRadius.circular(20)),
-          style: NeumorphicStyle(
-              color: AppColors.primary,
-              depth: -10,
-              shadowDarkColorEmboss: Colors.black54,
-              shadowLightColorEmboss: Colors.black38),
+          style: NeumorphicStyle(color: AppColors.buttonsGrey, depth: -10),
           child: TextField(
             cursorColor: AppColors.secondary,
             onChanged: (text) => onChanged(text),
             style: TextStyle(
                 fontSize: 14,
-                fontWeight: FontWeight.bold,
+                fontWeight: FontWeight.w600,
                 color: Colors.black87),
             decoration: InputDecoration(
                 prefixIcon: Icon(
@@ -99,7 +95,8 @@ class BottomSearchBarWidget extends StatelessWidget {
                     const Radius.circular(20.0),
                   ),
                 ),
-                hintStyle: TextStyle(color: Colors.grey[800]),
+                hintStyle: TextStyle(
+                    color: Colors.black87, fontWeight: FontWeight.w600),
                 hintText: "Wyszukaj"),
           ),
         ),

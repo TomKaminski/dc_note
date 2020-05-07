@@ -25,3 +25,16 @@ class ProductsLoaded extends ProductsState {
   @override
   List<Object> get props => [categories];
 }
+
+class InUseProductsLoaded extends ProductsState {
+  final List<ProductModel> products;
+
+  const InUseProductsLoaded({this.products});
+
+  InUseProductsLoaded copyWith({List<ProductModel> accounts}) {
+    return InUseProductsLoaded(products: accounts ?? this.products);
+  }
+
+  @override
+  List<Object> get props => [products];
+}

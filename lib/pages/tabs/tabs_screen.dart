@@ -55,7 +55,7 @@ class _TabPageState extends State<TabsScreen> {
           onTap: _onItemTapped,
           items: [
             createBottomNavItem(0, "Produkty", Icons.list),
-            createBottomNavItem(1, "Używane", Icons.mood),
+            createBottomNavItem(1, "Używane", Icons.star_border),
             createBottomNavItem(2, "O aplikacji", Icons.info_outline),
           ]),
     );
@@ -71,18 +71,16 @@ class _TabPageState extends State<TabsScreen> {
       ),
       icon: Neumorphic(
         style: NeumorphicStyle(
-            color: Colors.white,
+            color: AppColors.buttonsGrey,
             shape: NeumorphicShape.concave,
-            shadowDarkColorEmboss: AppColors.primary,
-            shadowLightColorEmboss: AppColors.primary,
             depth: _selectedIndex == index ? -20 : 20),
         boxShape:
-            NeumorphicBoxShape.roundRect(BorderRadius.all(Radius.circular(10))),
+            NeumorphicBoxShape.roundRect(BorderRadius.all(Radius.circular(14))),
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
           child: Icon(
             icon,
-            color: Colors.black87,
+            color: AppColors.secondary,
           ),
         ),
       ),

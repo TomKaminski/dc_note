@@ -1,7 +1,7 @@
 import 'package:DC_Note/core/statics/adds.dart';
 import 'package:DC_Note/core/statics/colors.dart';
 import 'package:DC_Note/pages/category_selector/category_selector_screen.dart';
-import 'package:DC_Note/pages/products/product_list_item.dart';
+import 'package:DC_Note/pages/product_row/base_product_row.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:liquid_pull_to_refresh/liquid_pull_to_refresh.dart';
@@ -35,9 +35,10 @@ class ProductsScreenState extends State<ProductsScreen> {
                 BlocProvider.of<ProductsBloc>(context).searchStream.add(text),
           ),
         ),
+        centerTitle: true,
         title: Text(
           "Wszystkie produkty",
-          style: TextStyle(fontSize: 20, fontWeight: FontWeight.w500),
+          style: TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
         ),
       ),
       floatingActionButton: FloatingActionButton(
@@ -85,17 +86,36 @@ class ProductsScreenState extends State<ProductsScreen> {
                           ),
                           SizedBox(width: 8),
                           Text(
-                            '${category.entry.title}${category.children.length > 0 ? " ( ${category.children.length} )" : ""}',
+                            '${category.entry.title}${category.children.length > 0 ? " ( ${category.productsCount} )" : ""}',
                             style: TextStyle(
                                 fontSize: 18, fontWeight: FontWeight.w500),
                           ),
                         ],
                       ),
-                      children: category.children.length != 0
-                          ? category.children
-                              .map((product) =>
-                                  ProductListItemWidget(product: product))
-                              .toList()
+                      children: category.children.length != 0 ||
+                              category.productsChildren.length != 0
+                          ? <Widget>[] +
+                              category.productsChildren
+                                  .map((e) => BaseProductRowWidget(
+                                      product: e, hideCategory: true))
+                                  .toList() +
+                              category.children
+                                  .map((innerCategory) => ExpansionTile(
+                                      title: Text(
+                                        '${innerCategory.entry.title} ( ${innerCategory.children.length} )',
+                                        style: TextStyle(
+                                            color: Colors.black87,
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 14),
+                                      ),
+                                      children: innerCategory.children
+                                          .map(
+                                              (product) => BaseProductRowWidget(
+                                                    product: product,
+                                                    hideCategory: true,
+                                                  ))
+                                          .toList()))
+                                  .toList()
                           : [
                               ListTile(
                                 title: Text(
@@ -116,11 +136,7 @@ class ProductsScreenState extends State<ProductsScreen> {
             child: CircularProgressIndicator(),
           );
         },
-        listener: (BuildContext context, ProductsState state) {
-          if (state is ProductsUpdated) {
-            Navigator.of(context).pop();
-          }
-        },
+        listener: (BuildContext context, ProductsState state) {},
       ),
     );
   }

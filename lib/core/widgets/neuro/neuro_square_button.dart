@@ -10,7 +10,7 @@ class NeumorphicSquareButtonStyle {
 
   const NeumorphicSquareButtonStyle.appBarButton(
       {this.sizeWithPaddings = 54.0,
-      this.buttonSize = 32.0,
+      this.buttonSize = 34.0,
       this.iconSize = 22.0,
       this.borderRadius = 8.0,
       this.neumorphicStyle = const NeumorphicStyle(
@@ -19,7 +19,7 @@ class NeumorphicSquareButtonStyle {
   const NeumorphicSquareButtonStyle.listItemSelected(
       {this.sizeWithPaddings = 40.0,
       this.buttonSize = 40.0,
-      this.iconSize = 22.0,
+      this.iconSize = 24.0,
       this.borderRadius = 8.0,
       this.neumorphicStyle = const NeumorphicStyle(
           color: Color.fromARGB(255, 235, 236, 240), depth: -5)});
@@ -27,7 +27,7 @@ class NeumorphicSquareButtonStyle {
   const NeumorphicSquareButtonStyle.listItemNotSelected(
       {this.sizeWithPaddings = 40.0,
       this.buttonSize = 40.0,
-      this.iconSize = 22.0,
+      this.iconSize = 24.0,
       this.borderRadius = 8.0,
       this.neumorphicStyle = const NeumorphicStyle(
           color: Color.fromARGB(255, 235, 236, 240), depth: 5)});

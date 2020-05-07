@@ -96,6 +96,6 @@ class CategoryDao extends DatabaseAccessor<AppDatabase>
     return delete(categoryTable).go();
   }
 
-  Future<int> insert(CategoryEntity category) async =>
-      into(categoryTable).insert(category, orReplace: true);
+  Future<int> insert(CategoryEntity category, InsertMode mode) async =>
+      into(categoryTable).insert(category, mode: mode);
 }

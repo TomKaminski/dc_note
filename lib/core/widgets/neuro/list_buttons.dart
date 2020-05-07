@@ -8,7 +8,7 @@ class ListButton extends NeumorphicSquareButton {
       : super.listItemSelected(
           child: Icon(
             Icons.star,
-            color: AppColors.secondary,
+            color: AppColors.gold,
           ),
           onTap: (context) => onTap(),
         );
@@ -17,15 +17,32 @@ class ListButton extends NeumorphicSquareButton {
       : super.listItemNotSelected(
             child: Icon(
               Icons.star_border,
-              color: AppColors.secondary,
+              color: Colors.grey,
             ),
             onTap: (context) => onTap());
 
+  ListButton.deleteProduct(void Function() onTap)
+      : super.listItemNotSelected(
+            child: Icon(
+              Icons.delete,
+              color: AppColors.secondary,
+              size: 14,
+            ),
+            onTap: (context) => onTap(),
+            style: NeumorphicSquareButtonStyle.listItemNotSelected(
+                buttonSize: 36, sizeWithPaddings: 30));
+
   ListButton.loadingSelected()
       : super.listItemSelected(
-            child: CircularProgressIndicator(), onTap: (_) {});
+            child: CircularProgressIndicator(
+              strokeWidth: 2,
+            ),
+            onTap: (_) {});
 
   ListButton.loadingNotSelected()
       : super.listItemNotSelected(
-            child: CircularProgressIndicator(), onTap: (_) {});
+            child: CircularProgressIndicator(
+              strokeWidth: 2,
+            ),
+            onTap: (_) {});
 }

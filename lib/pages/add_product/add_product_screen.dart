@@ -13,6 +13,7 @@ import 'package:DC_Note/pages/add_product/bloc/add_product_bloc.dart';
 import 'package:DC_Note/pages/category_selector/category_selector_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 
 class AddProductScreen extends StatefulWidget {
   final ProductModel editModel;
@@ -53,7 +54,7 @@ class AddProductScreenState extends State<AddProductScreen> {
         title: Text(
           widget.editModel != null ? "Edytuj produkt" : "Dodaj produkt",
           textAlign: TextAlign.start,
-          style: TextStyle(fontSize: 20),
+          style: TextStyle(fontSize: 18),
         ),
       ),
       body: BlocConsumer<AddProductBloc, BooleanState>(
@@ -71,16 +72,28 @@ class AddProductScreenState extends State<AddProductScreen> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 12.0),
-                      child: Text(
-                        'Dodaj produkt wypełniając odpowiednie pola. Data ważności, notatki oraz pole "Aktualnie używam" są opcjonalne. W każdej chwili możesz je zmienić w widoku edycji produktu.',
-                        style: TextStyle(
-                            fontWeight: FontWeight.w700,
-                            fontSize: 14,
-                            height: 1.6),
+                    if (widget.editModel == null)
+                      Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 12.0),
+                        child: Text(
+                          'Dodaj produkt wypełniając odpowiednie pola. Data ważności, notatki oraz pole "Aktualnie używam" są opcjonalne. W każdej chwili możesz je zmienić w widoku edycji produktu.',
+                          style: TextStyle(
+                              fontWeight: FontWeight.w700,
+                              fontSize: 13,
+                              height: 1.6),
+                        ),
+                      )
+                    else
+                      Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 12.0),
+                        child: Text(
+                          'Edytuj produkt zmieniając odpowiednie pola. Data ważności, notatki oraz pole "Aktualnie używam" są opcjonalne. Jeżeli chcesz usunąć produkt wybierz odpowiedni przycisk poniżej.',
+                          style: TextStyle(
+                              fontWeight: FontWeight.w700,
+                              fontSize: 13,
+                              height: 1.6),
+                        ),
                       ),
-                    ),
                     BaseTextFieldWidget(
                         title: "Nazwa produktu",
                         blocField: bloc.nameField,
@@ -123,15 +136,19 @@ class AddProductScreenState extends State<AddProductScreen> {
                         blocField: bloc.inUseField,
                         initialData: bloc.inUseField.value,
                         isRequired: true),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 24.0),
-                      child: FormSubmitButton(
-                        disabledStream: bloc.isFormValid,
-                        isDisabled: currentState.isProcessing,
-                        onPressed: () => bloc.add(AddProductEvent()),
-                        text: "Zapisz produkt",
-                      ),
+                    SizedBox(height: 12),
+                    FormSubmitButton(
+                      disabledStream: bloc.isFormValid,
+                      isDisabled: currentState.isProcessing,
+                      onPressed: () => bloc.add(AddProductEvent()),
+                      text: "Zapisz produkt",
                     ),
+                    // SizedBox(height: 18),
+                    // NeumorphicButton(
+                    //   style: NeumorphicStyle(color: Colors.red, depth: -10),
+                    //   child: Text("Usuń produkt"),
+                    // ),
+                    // SizedBox(height: 24)
                   ],
                 ),
               ),
