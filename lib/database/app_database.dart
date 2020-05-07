@@ -1,3 +1,4 @@
+import 'package:DC_Note/core/statics/categories_provider.dart';
 import 'package:DC_Note/database/category.dart';
 import 'package:DC_Note/database/product.dart';
 import 'package:moor_flutter/moor_flutter.dart';
@@ -8,11 +9,31 @@ part 'app_database.g.dart';
 class AppDatabase extends _$AppDatabase {
   AppDatabase()
       : super(FlutterQueryExecutor.inDatabaseFolder(
-            path: 'generated/db.sqlite', logStatements: true)
-          ..doWhenOpened((e) => e.runCustom('PRAGMA foreign_keys = ON')));
+            path: 'generated/db.sqlite', logStatements: true));
 
   @override
-  int get schemaVersion => 1;
+  int get schemaVersion => 2;
+
+  @override
+  MigrationStrategy get migration => MigrationStrategy(
+        onCreate: (Migrator m) {
+          return m.createAll();
+        },
+        onUpgrade: (Migrator m, int from, int to) async {
+          if (from == 1) {
+            await m.addColumn(productTable, productTable.isReviewed);
+          }
+        },
+        beforeOpen: (details) async {
+          if (details.versionBefore == 1 && details.versionNow == 2) {
+            (update(categoryTable)
+                  ..where((t) => t.key.equals("CATEGORY_HAIR_2")))
+                .write(
+              CategoryTableCompanion(name: Value("odżywki do spłukiwania")),
+            );
+          }
+        },
+      );
 }
 
 @UseDao(tables: [ProductTable])

@@ -133,18 +133,19 @@ class CategoriesProvider {
         .getSingle((tbl) => tbl.key.equals(CategoryKeyEnum.hair.name));
 
     List<String> categoryNames = [
-      "do stylizacji włosów",
-      "farby / henny",
-      "odżywki",
-      "maski",
-      "olejki do włosów",
-      "peeling do skóry głowy",
-      "płukanki do włosów",
-      "suche szampony",
-      "szampony",
-      "termoochrona włosów",
-      "wcierki do skóry głowy",
-      "inne",
+      "do stylizacji włosów", //0
+      "farby / henny", //1
+      "odżywki", //2
+      "maski", //3
+      "olejki do włosów", //4
+      "peeling do skóry głowy", //5
+      "płukanki do włosów", //6
+      "suche szampony", //7
+      "szampony", //8
+      "termoochrona włosów", //9
+      "wcierki do skóry głowy", //10
+      "inne", //11
+      "odżywki w sprayu" //12
     ];
 
     final entities = categoryNames
@@ -166,20 +167,21 @@ class CategoriesProvider {
         .getSingle((tbl) => tbl.key.equals(CategoryKeyEnum.face.name));
 
     List<String> categoryNames = [
-      "ampułki / serum / olejki do twarzy",
-      "demakijaż",
-      "do higieny jamy ustnej",
-      "hydrolaty",
-      "kremy do twarzy",
-      "kremy pod oczy",
-      "maseczki",
-      "peeling do ust",
-      "plasterki na nos",
-      "toniki",
-      "woda różana",
-      "żele do oczyszczania twarzy",
-      "pianki do oczyszczania twarzy",
-      "inne"
+      "ampułki / serum / olejki do twarzy", //0
+      "demakijaż", //1
+      "do higieny jamy ustnej", //2
+      "hydrolaty", //3
+      "kremy do twarzy", //4
+      "kremy pod oczy", //5
+      "maseczki", //6
+      "peeling do ust", //7
+      "plasterki na nos", //8
+      "toniki", //9
+      "woda różana", //10
+      "żele do oczyszczania twarzy", //11
+      "pianki do oczyszczania twarzy", //12
+      "inne" //13
+          "peelingi do twarzy" //14
     ];
 
     final entities = categoryNames
@@ -201,7 +203,7 @@ class CategoriesProvider {
         .getSingle((tbl) => tbl.key.equals(CategoryKeyEnum.colour.name));
 
     List<String> categoryNames = [
-      "bazy pod makijaż / pod cienie",
+      "bazy pod makijaż / pod cienie", //
       "błyszczyki / szminki / pomadki",
       "bronzery",
       "cienie do oczu",
@@ -257,6 +259,11 @@ class CategoriesProvider {
       "żel aloesowy/żel bambusowy",
       "żele pod prysznic",
       "inne",
+      "ochrona przeciwsłoneczna",
+      "kosmetyk uniwersalny",
+      "oleje",
+      "po opalaniu",
+      "samoopalacze",
     ];
 
     final entities = categoryNames
@@ -289,6 +296,8 @@ class CategoriesProvider {
       "żele do paznokci",
       "zmywacze do paznokci",
       "inne",
+      "bazy hybrydowe",
+      "topy hybrydowe"
     ];
 
     final entities = categoryNames

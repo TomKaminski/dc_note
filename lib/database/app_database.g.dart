@@ -11,6 +11,7 @@ class ProductEntity extends DataClass implements Insertable<ProductEntity> {
   final int id;
   final String name;
   final bool inUse;
+  final bool isReviewed;
   final int quantity;
   final int categoryId;
   final DateTime useUntil;
@@ -19,6 +20,7 @@ class ProductEntity extends DataClass implements Insertable<ProductEntity> {
       {@required this.id,
       @required this.name,
       @required this.inUse,
+      @required this.isReviewed,
       @required this.quantity,
       @required this.categoryId,
       this.useUntil,
@@ -35,6 +37,8 @@ class ProductEntity extends DataClass implements Insertable<ProductEntity> {
       id: intType.mapFromDatabaseResponse(data['${effectivePrefix}id']),
       name: stringType.mapFromDatabaseResponse(data['${effectivePrefix}name']),
       inUse: boolType.mapFromDatabaseResponse(data['${effectivePrefix}in_use']),
+      isReviewed: boolType
+          .mapFromDatabaseResponse(data['${effectivePrefix}is_reviewed']),
       quantity:
           intType.mapFromDatabaseResponse(data['${effectivePrefix}quantity']),
       categoryId: intType
@@ -52,6 +56,7 @@ class ProductEntity extends DataClass implements Insertable<ProductEntity> {
       id: serializer.fromJson<int>(json['id']),
       name: serializer.fromJson<String>(json['name']),
       inUse: serializer.fromJson<bool>(json['inUse']),
+      isReviewed: serializer.fromJson<bool>(json['isReviewed']),
       quantity: serializer.fromJson<int>(json['quantity']),
       categoryId: serializer.fromJson<int>(json['categoryId']),
       useUntil: serializer.fromJson<DateTime>(json['useUntil']),
@@ -65,6 +70,7 @@ class ProductEntity extends DataClass implements Insertable<ProductEntity> {
       'id': serializer.toJson<int>(id),
       'name': serializer.toJson<String>(name),
       'inUse': serializer.toJson<bool>(inUse),
+      'isReviewed': serializer.toJson<bool>(isReviewed),
       'quantity': serializer.toJson<int>(quantity),
       'categoryId': serializer.toJson<int>(categoryId),
       'useUntil': serializer.toJson<DateTime>(useUntil),
@@ -79,6 +85,9 @@ class ProductEntity extends DataClass implements Insertable<ProductEntity> {
       name: name == null && nullToAbsent ? const Value.absent() : Value(name),
       inUse:
           inUse == null && nullToAbsent ? const Value.absent() : Value(inUse),
+      isReviewed: isReviewed == null && nullToAbsent
+          ? const Value.absent()
+          : Value(isReviewed),
       quantity: quantity == null && nullToAbsent
           ? const Value.absent()
           : Value(quantity),
@@ -97,6 +106,7 @@ class ProductEntity extends DataClass implements Insertable<ProductEntity> {
           {int id,
           String name,
           bool inUse,
+          bool isReviewed,
           int quantity,
           int categoryId,
           DateTime useUntil,
@@ -105,6 +115,7 @@ class ProductEntity extends DataClass implements Insertable<ProductEntity> {
         id: id ?? this.id,
         name: name ?? this.name,
         inUse: inUse ?? this.inUse,
+        isReviewed: isReviewed ?? this.isReviewed,
         quantity: quantity ?? this.quantity,
         categoryId: categoryId ?? this.categoryId,
         useUntil: useUntil ?? this.useUntil,
@@ -116,6 +127,7 @@ class ProductEntity extends DataClass implements Insertable<ProductEntity> {
           ..write('id: $id, ')
           ..write('name: $name, ')
           ..write('inUse: $inUse, ')
+          ..write('isReviewed: $isReviewed, ')
           ..write('quantity: $quantity, ')
           ..write('categoryId: $categoryId, ')
           ..write('useUntil: $useUntil, ')
@@ -132,9 +144,11 @@ class ProductEntity extends DataClass implements Insertable<ProductEntity> {
           $mrjc(
               inUse.hashCode,
               $mrjc(
-                  quantity.hashCode,
-                  $mrjc(categoryId.hashCode,
-                      $mrjc(useUntil.hashCode, notes.hashCode)))))));
+                  isReviewed.hashCode,
+                  $mrjc(
+                      quantity.hashCode,
+                      $mrjc(categoryId.hashCode,
+                          $mrjc(useUntil.hashCode, notes.hashCode))))))));
   @override
   bool operator ==(dynamic other) =>
       identical(this, other) ||
@@ -142,6 +156,7 @@ class ProductEntity extends DataClass implements Insertable<ProductEntity> {
           other.id == this.id &&
           other.name == this.name &&
           other.inUse == this.inUse &&
+          other.isReviewed == this.isReviewed &&
           other.quantity == this.quantity &&
           other.categoryId == this.categoryId &&
           other.useUntil == this.useUntil &&
@@ -152,6 +167,7 @@ class ProductTableCompanion extends UpdateCompanion<ProductEntity> {
   final Value<int> id;
   final Value<String> name;
   final Value<bool> inUse;
+  final Value<bool> isReviewed;
   final Value<int> quantity;
   final Value<int> categoryId;
   final Value<DateTime> useUntil;
@@ -160,6 +176,7 @@ class ProductTableCompanion extends UpdateCompanion<ProductEntity> {
     this.id = const Value.absent(),
     this.name = const Value.absent(),
     this.inUse = const Value.absent(),
+    this.isReviewed = const Value.absent(),
     this.quantity = const Value.absent(),
     this.categoryId = const Value.absent(),
     this.useUntil = const Value.absent(),
@@ -169,18 +186,21 @@ class ProductTableCompanion extends UpdateCompanion<ProductEntity> {
     this.id = const Value.absent(),
     @required String name,
     @required bool inUse,
+    @required bool isReviewed,
     @required int quantity,
     @required int categoryId,
     this.useUntil = const Value.absent(),
     this.notes = const Value.absent(),
   })  : name = Value(name),
         inUse = Value(inUse),
+        isReviewed = Value(isReviewed),
         quantity = Value(quantity),
         categoryId = Value(categoryId);
   ProductTableCompanion copyWith(
       {Value<int> id,
       Value<String> name,
       Value<bool> inUse,
+      Value<bool> isReviewed,
       Value<int> quantity,
       Value<int> categoryId,
       Value<DateTime> useUntil,
@@ -189,6 +209,7 @@ class ProductTableCompanion extends UpdateCompanion<ProductEntity> {
       id: id ?? this.id,
       name: name ?? this.name,
       inUse: inUse ?? this.inUse,
+      isReviewed: isReviewed ?? this.isReviewed,
       quantity: quantity ?? this.quantity,
       categoryId: categoryId ?? this.categoryId,
       useUntil: useUntil ?? this.useUntil,
@@ -230,6 +251,18 @@ class $ProductTableTable extends ProductTable
   GeneratedBoolColumn _constructInUse() {
     return GeneratedBoolColumn(
       'in_use',
+      $tableName,
+      false,
+    );
+  }
+
+  final VerificationMeta _isReviewedMeta = const VerificationMeta('isReviewed');
+  GeneratedBoolColumn _isReviewed;
+  @override
+  GeneratedBoolColumn get isReviewed => _isReviewed ??= _constructIsReviewed();
+  GeneratedBoolColumn _constructIsReviewed() {
+    return GeneratedBoolColumn(
+      'is_reviewed',
       $tableName,
       false,
     );
@@ -285,7 +318,7 @@ class $ProductTableTable extends ProductTable
 
   @override
   List<GeneratedColumn> get $columns =>
-      [id, name, inUse, quantity, categoryId, useUntil, notes];
+      [id, name, inUse, isReviewed, quantity, categoryId, useUntil, notes];
   @override
   $ProductTableTable get asDslTable => this;
   @override
@@ -310,6 +343,12 @@ class $ProductTableTable extends ProductTable
           _inUseMeta, inUse.isAcceptableValue(d.inUse.value, _inUseMeta));
     } else if (isInserting) {
       context.missing(_inUseMeta);
+    }
+    if (d.isReviewed.present) {
+      context.handle(_isReviewedMeta,
+          isReviewed.isAcceptableValue(d.isReviewed.value, _isReviewedMeta));
+    } else if (isInserting) {
+      context.missing(_isReviewedMeta);
     }
     if (d.quantity.present) {
       context.handle(_quantityMeta,
@@ -353,6 +392,9 @@ class $ProductTableTable extends ProductTable
     }
     if (d.inUse.present) {
       map['in_use'] = Variable<bool, BoolType>(d.inUse.value);
+    }
+    if (d.isReviewed.present) {
+      map['is_reviewed'] = Variable<bool, BoolType>(d.isReviewed.value);
     }
     if (d.quantity.present) {
       map['quantity'] = Variable<int, IntType>(d.quantity.value);
