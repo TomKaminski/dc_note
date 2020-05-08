@@ -32,7 +32,7 @@ class InUseProductsScreenState extends State<InUseProductsScreen> {
                 BlocProvider.of<ProductsBloc>(context).searchStream.add(text),
           ),
         ),
-        centerTitle: false,
+        centerTitle: true,
         title: Text(
           "Używane produkty",
           textAlign: TextAlign.start,

@@ -99,84 +99,70 @@ class BaseProductRowWidgetState extends State<BaseProductRowWidget> {
       child: Container(
         color: Colors.transparent,
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
+          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 12),
+          child: Column(
             children: [
-              BlocBuilder<ProductRowBloc, ProductRowState>(
-                  bloc: bloc,
-                  builder: (ctx, state) {
-                    if (state.isProcessing) {
-                      return buildLoading(state.data);
-                    }
-                    return buildInUseButton(state.data);
-                  }),
-              SizedBox(width: 12),
-              Expanded(
-                child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        "${widget.product.quantity}x ${widget.product.name}",
-                        style: TextStyle(
-                            fontSize: 15,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.black87),
-                      ),
-                      SizedBox(height: 1),
-                      Visibility(
-                        visible: !widget.hideCategory,
-                        child: Text(
-                          widget.product.category.title,
-                          maxLines: 3,
-                          style: TextStyle(
-                              fontSize: 12,
-                              fontWeight: FontWeight.bold,
-                              letterSpacing: 0.5,
-                              color: Colors.black54),
-                        ),
-                      ),
-                      if (widget.product.useUntil != null)
-                        Text(
-                          'ważne do ${DateFormat.yMMMMd("PL").format(widget.product.useUntil)}',
-                          style: TextStyle(
-                              fontSize: 12,
-                              color: Colors.black54,
-                              fontWeight: FontWeight.w600),
-                        )
-                    ]),
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  BlocBuilder<ProductRowBloc, ProductRowState>(
+                      bloc: bloc,
+                      builder: (ctx, state) {
+                        if (state.isProcessing) {
+                          return buildLoading(state.data);
+                        }
+                        return buildInUseButton(state.data);
+                      }),
+                  SizedBox(width: 12),
+                  Expanded(
+                    child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            "${widget.product.quantity}x ${widget.product.name}",
+                            style: TextStyle(
+                                fontSize: 15,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.black87),
+                          ),
+                          SizedBox(height: 1),
+                          Visibility(
+                            visible: !widget.hideCategory,
+                            child: Text(
+                              widget.product.category.title,
+                              maxLines: 3,
+                              style: TextStyle(
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.bold,
+                                  letterSpacing: 0.5,
+                                  color: Colors.black54),
+                            ),
+                          ),
+                          if (widget.product.useUntil != null)
+                            Text(
+                              'ważne do ${DateFormat.yMMMMd("PL").format(widget.product.useUntil)}',
+                              style: TextStyle(
+                                  fontSize: 12,
+                                  color: Colors.black54,
+                                  fontWeight: FontWeight.w600),
+                            ),
+                          if (widget.product.reviewed == true)
+                            Text(
+                              'przetestowane',
+                              style: TextStyle(
+                                  fontSize: 10,
+                                  color: AppColors.secondary,
+                                  fontWeight: FontWeight.w700),
+                            )
+                        ]),
+                  ),
+                  buildDeleteButton(),
+                ],
               ),
-              buildDeleteButton(),
             ],
           ),
         ),
       ),
     );
-  }
-
-  List<ModalActionItem> buildModalActions(
-      BuildContext context, ProductsBloc productBloc) {
-    final List<ModalActionItem> items = [];
-
-    items.addAll([
-      ModalActionItem(
-          name: "Edytuj",
-          onPressed: () async {
-            Navigator.of(context).pop();
-            final result = await Navigator.of(context).push(MaterialPageRoute(
-                builder: (ctx) => AddProductScreen(editModel: widget.product)));
-
-            if (result == true) {
-              productBloc.add(LoadProductsEvent(null));
-            }
-          }),
-      ModalActionItem(
-          name: "Usuń produkt",
-          style: TextStyle(color: Colors.red),
-          onPressed: () {
-            productBloc.add(DeleteProductEvent(widget.product.id));
-          }),
-    ]);
-    return items;
   }
 }

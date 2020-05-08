@@ -23,6 +23,7 @@ class _AboutScreenState extends State<AboutScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        centerTitle: true,
         title: Text(
           "O aplikacji",
           style: TextStyle(fontSize: 20, fontWeight: FontWeight.w500),
