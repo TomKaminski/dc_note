@@ -25,6 +25,7 @@ class InnerCategoryEntry {
 class ProductModel extends BaseAppModel {
   final int id;
   final bool inUse;
+  final bool reviewed;
   final int quantity;
   final DateTime useUntil;
   final String name;
@@ -32,13 +33,14 @@ class ProductModel extends BaseAppModel {
   final CategorySelectorItem category;
 
   ProductModel(this.id, this.quantity, this.useUntil, this.name, this.inUse,
-      this.category, this.notes);
+      this.category, this.notes, this.reviewed);
 
   ProductModel.fromEntity(ProductEntity entity, CategoryEntity category)
       : id = entity.id,
         name = entity.name,
         notes = entity.notes,
         quantity = entity.quantity,
+        reviewed = entity.isReviewed,
         category = CategorySelectorItem(
             category.name,
             entity.categoryId,
@@ -53,6 +55,7 @@ class ProductModel extends BaseAppModel {
         id: id,
         name: name,
         quantity: quantity,
+        isReviewed: reviewed,
         notes: notes,
         categoryId: category.id,
         useUntil: useUntil,

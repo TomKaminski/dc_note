@@ -1,4 +1,5 @@
 import 'package:DC_Note/core/models/product_model.dart';
+import 'package:DC_Note/core/statics/colors.dart';
 import 'package:DC_Note/core/widgets/modal/modal_with_actions_widget.dart';
 import 'package:DC_Note/core/widgets/neuro/list_buttons.dart';
 import 'package:DC_Note/pages/add_product/add_product_screen.dart';
@@ -6,6 +7,7 @@ import 'package:DC_Note/pages/product_row/bloc/product_row_bloc.dart';
 import 'package:DC_Note/pages/products/bloc/products_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 import 'package:intl/intl.dart';
 
 class BaseProductRowWidget extends StatefulWidget {
@@ -51,7 +53,30 @@ class BaseProductRowWidgetState extends State<BaseProductRowWidget> {
   }
 
   Widget buildDeleteButton() {
-    return ListButton.deleteProduct(() {});
+    return ListButton.deleteProduct(() {
+      showDialog(
+          context: context,
+          child: AlertDialog(
+            backgroundColor: AppColors.buttonsGrey,
+            content: Text("Na pewno usunąć produkt?"),
+            actions: [
+              NeumorphicButton(
+                child: Text("Usuń"),
+                style: NeumorphicStyle(color: Colors.red),
+                onClick: () {
+                  onDeleteConfirmCallback(context);
+                  Navigator.of(context).pop();
+                },
+              ),
+              NeumorphicButton(
+                child: Text("Anuluj"),
+                onClick: () {
+                  Navigator.of(context).pop();
+                },
+              )
+            ],
+          ));
+    });
   }
 
   Widget buildLoading(bool inUse) {

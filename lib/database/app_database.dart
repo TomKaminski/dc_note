@@ -95,7 +95,11 @@ class CategoryDao extends DatabaseAccessor<AppDatabase>
 
   Future<List<CategoryEntity>> getAllByExpression(
       Expression<bool, BoolType> Function($CategoryTableTable) filter) async {
-    return await (select(categoryTable)..where(filter)).get();
+    return await ((select(categoryTable)..where(filter))
+          ..orderBy([
+            (u) => OrderingTerm(expression: u.name, mode: OrderingMode.asc),
+          ]))
+        .get();
   }
 
   Future<List<CategoryEntity>> getAll() async => select(categoryTable).get();

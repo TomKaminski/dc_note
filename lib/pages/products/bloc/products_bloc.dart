@@ -42,27 +42,14 @@ class ProductsBloc extends Bloc<ProductsEvent, ProductsState> {
   ) async* {
     if (event is LoadProductsEvent) {
       try {
-        if (onlyFavourites) {
-          final products = (await fetchInUseProducts(
-                  event.searchPhrase ?? searchStream.value))
-              .toList();
-          yield InUseProductsLoaded(products: products);
-        } else {
-          final products = (await fetchGroupedProducts(
-                  event.searchPhrase ?? searchStream.value))
-              .toList();
-          yield ProductsLoaded(categories: products);
-        }
+        yield* fetch(event.searchPhrase ?? searchStream.value);
       } catch (error) {
         yield ProductsError();
       }
     } else if (event is DeleteProductEvent) {
       try {
         await Application.database.productDao.deleteById(event.id);
-        yield ProductsUpdated();
-        final products =
-            (await fetchGroupedProducts(searchStream.value)).toList();
-        yield ProductsLoaded(categories: products.toList());
+        yield* fetch(searchStream.value);
       } catch (error) {
         yield ProductsError();
       }
@@ -70,13 +57,20 @@ class ProductsBloc extends Bloc<ProductsEvent, ProductsState> {
       try {
         await Application.database.productDao
             .toggleInUseProduct(event.inUse, event.id);
-        yield ProductsUpdated();
-        final products =
-            (await fetchGroupedProducts(searchStream.value)).toList();
-        yield ProductsLoaded(categories: products.toList());
+        yield* fetch(searchStream.value);
       } catch (error) {
         yield ProductsError();
       }
+    }
+  }
+
+  Stream<ProductsState> fetch(String searchPhrase) async* {
+    if (onlyFavourites) {
+      final products = (await fetchInUseProducts(searchPhrase)).toList();
+      yield InUseProductsLoaded(products: products);
+    } else {
+      final products = (await fetchGroupedProducts(searchPhrase)).toList();
+      yield ProductsLoaded(categories: products);
     }
   }
 

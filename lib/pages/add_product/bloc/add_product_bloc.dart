@@ -24,6 +24,7 @@ class AddProductBloc extends Bloc<AddProductEvent, BooleanState> {
 
   final notesField = BehaviorBlocField<String>();
   final inUseField = BehaviorBlocField<bool>();
+  final reviewedField = BehaviorBlocField<bool>();
   final useUntilField = BehaviorBlocField<DateTime>();
 
   final categoryField = BehaviorBlocField<CategorySelectorItem>(
@@ -47,6 +48,7 @@ class AddProductBloc extends Bloc<AddProductEvent, BooleanState> {
       notesField.emit(product.notes);
       useUntilField.emit(product.useUntil);
       categoryField.emit(product.category);
+      reviewedField.emit(product.reviewed);
     }
   }
 
@@ -69,6 +71,7 @@ class AddProductBloc extends Bloc<AddProductEvent, BooleanState> {
             categoryId: categoryField.value.id,
             useUntil: useUntilField.value,
             notes: notesField.value,
+            isReviewed: reviewedField.value,
             id: id,
             inUse: inUseField.value ?? false));
       } else {
@@ -78,6 +81,7 @@ class AddProductBloc extends Bloc<AddProductEvent, BooleanState> {
             categoryId: categoryField.value.id,
             useUntil: useUntilField.value,
             notes: notesField.value,
+            isReviewed: reviewedField.value ?? false,
             id: null,
             inUse: inUseField.value ?? false));
       }

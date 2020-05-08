@@ -35,7 +35,7 @@ class AddProductScreenState extends State<AddProductScreen> {
 
     if (Application.showedFullscreenAdd == false) {
       Application.showedFullscreenAdd = true;
-      //AppAds.showFullscreen(state: this);
+      AppAds.showFullscreen(state: this);
     }
   }
 
@@ -135,7 +135,13 @@ class AddProductScreenState extends State<AddProductScreen> {
                         isDisabled: currentState.isProcessing,
                         blocField: bloc.inUseField,
                         initialData: bloc.inUseField.value,
-                        isRequired: true),
+                        isRequired: false),
+                    BaseCheckboxFieldWidget(
+                        title: "Przetestowane",
+                        isDisabled: currentState.isProcessing,
+                        blocField: bloc.reviewedField,
+                        initialData: bloc.reviewedField.value,
+                        isRequired: false),
                     SizedBox(height: 12),
                     FormSubmitButton(
                       disabledStream: bloc.isFormValid,
@@ -143,12 +149,6 @@ class AddProductScreenState extends State<AddProductScreen> {
                       onPressed: () => bloc.add(AddProductEvent()),
                       text: "Zapisz produkt",
                     ),
-                    // SizedBox(height: 18),
-                    // NeumorphicButton(
-                    //   style: NeumorphicStyle(color: Colors.red, depth: -10),
-                    //   child: Text("Usuń produkt"),
-                    // ),
-                    // SizedBox(height: 24)
                   ],
                 ),
               ),

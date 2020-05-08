@@ -25,12 +25,12 @@ class ListButton extends NeumorphicSquareButton {
       : super.listItemNotSelected(
             child: Icon(
               Icons.delete,
-              color: AppColors.secondary,
-              size: 14,
+              color: Colors.red,
+              size: 16,
             ),
             onTap: (context) => onTap(),
             style: NeumorphicSquareButtonStyle.listItemNotSelected(
-                buttonSize: 36, sizeWithPaddings: 30));
+                buttonSize: 34, sizeWithPaddings: 40));
 
   ListButton.loadingSelected()
       : super.listItemSelected(

@@ -94,11 +94,7 @@ class InUseProductsScreenState extends State<InUseProductsScreen> {
             child: CircularProgressIndicator(),
           );
         },
-        listener: (BuildContext context, ProductsState state) {
-          if (state is ProductsUpdated) {
-            Navigator.of(context).pop();
-          }
-        },
+        listener: (BuildContext context, ProductsState state) {},
       ),
     );
   }

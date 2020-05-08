@@ -54,7 +54,7 @@ class _BaseCheckboxFieldWidgetState extends State<BaseCheckboxFieldWidget> {
         builder: (context, snapshot) {
           final isDisabled = snapshot.data == true;
           return Padding(
-            padding: const EdgeInsets.symmetric(vertical: 12.0),
+            padding: const EdgeInsets.symmetric(vertical: 4.0),
             child: GestureDetector(
               onTap: () {
                 if (!isDisabled) {

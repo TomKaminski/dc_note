@@ -9,13 +9,13 @@ class AboutScreen extends StatefulWidget {
 class _AboutScreenState extends State<AboutScreen> {
   @override
   void initState() {
-    //AppAds.showBanner(anchorOffset: 80);
+    AppAds.showBanner(anchorOffset: 80);
     super.initState();
   }
 
   @override
   void dispose() {
-    //AppAds.dispose();
+    AppAds.dispose();
     super.dispose();
   }
 

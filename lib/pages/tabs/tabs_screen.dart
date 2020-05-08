@@ -36,13 +36,13 @@ class _TabPageState extends State<TabsScreen> {
   @override
   void initState() {
     super.initState();
-    //AppAds.init();
+    AppAds.init();
   }
 
   @override
   void dispose() {
     super.dispose();
-    //AppAds.dispose();
+    AppAds.dispose();
   }
 
   @override

@@ -11,8 +11,6 @@ class ProductsUninitialized extends ProductsState {}
 
 class ProductsError extends ProductsState {}
 
-class ProductsUpdated extends ProductsState {}
-
 class ProductsLoaded extends ProductsState {
   final List<CategoryEntry> categories;
 
